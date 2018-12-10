@@ -1,4 +1,4 @@
-# n.vinceste.open-toon
+# nl.vinceste.open-toon
 
 ###App to use a Toon which is accesible from you local network
 
@@ -13,6 +13,7 @@ It can be used after you opened the IPTables at your Toon.
 DISCLAIMER: Use at own risk, i will not help you open your IPTables.
 
 ###Changelog
+
 0.0.1 :  Still lots to do, currently reading DisplayTemp, CurrentTemp and programstate. Also able to set those.
 
 

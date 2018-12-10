@@ -1,0 +1,407 @@
+{
+  "id": "nl.vinceste.open-toon",
+  "version": "0.0.1",
+  "compatibility": ">=1.5.0",
+  "sdk": 2,
+  "name": {
+    "en": "Open-Toon®",
+    "nl": "Open-Toon®"
+  },
+  "description": {
+    "en": "Open - Toon®",
+    "nl": "Open - Toon®"
+  },
+  "author": {
+    "name": "Vinceste IT"
+  },
+  "category": "climate",
+  "images": {
+    "large": "assets/images/large.png",
+    "small": "assets/images/small.png"
+  },
+  "capabilities": {
+    "temperature_state": {
+      "type": "enum",
+      "title": {
+        "en": "Temperature state",
+        "nl": "Temperatuurstand"
+      },
+      "getable": true,
+      "setable": true,
+      "values": [
+        {
+          "id": "comfort",
+          "title": {
+            "en": "Comfort",
+            "nl": "Comfort"
+          }
+        },
+        {
+          "id": "home",
+          "title": {
+            "en": "Home",
+            "nl": "Thuis"
+          }
+        },
+        {
+          "id": "sleep",
+          "title": {
+            "en": "Sleep",
+            "nl": "Slapen"
+          }
+        },
+        {
+          "id": "away",
+          "title": {
+            "en": "Away",
+            "nl": "Weg"
+          }
+        },
+        {
+          "id": "none",
+          "title": {
+            "en": "No state",
+            "nl": "Geen stand"
+          }
+        }
+      ]
+    }
+  },
+  "drivers": [
+    {
+      "id": "open-toon",
+      "name": {
+        "en": "Open Toon®",
+        "nl": "Open Toon®"
+      },
+      "images": {
+        "large": "drivers/open-toon/assets/images/large.png",
+        "small": "drivers/open-toon/assets/images/small.png"
+      },
+      "class": "thermostat",
+      "capabilities": [
+        "target_temperature",
+        "measure_temperature",
+        "temperature_state",
+        "meter_power",
+        "measure_power",
+        "meter_gas"
+      ],
+      "capabilitiesOptions": {
+        "target_temperature": {
+          "step": 0.5,
+          "min": 6,
+          "max": 30
+        }
+      },
+      "mobile": {
+        "components": [
+          {
+            "id": "icon",
+            "capabilities": []
+          },
+          {
+            "id": "sensor",
+            "capabilities": [
+              "measure_temperature",
+              "measure_power",
+              "meter_power",
+              "meter_gas"
+            ]
+          },
+          {
+            "capabilities": [
+              "temperature_state"
+            ],
+            "id": "picker"
+          },
+          {
+            "id": "thermostat",
+            "capabilities": [
+              "target_temperature"
+            ]
+          }
+        ]
+      },
+      "pair": [
+				{
+					"id": "start"
+				}
+			],
+      "settings": [
+			  {
+          "type": "group",
+          "label": {
+            "en": "Local Toon Settings",
+						"nl": "Lokale Toon Instellingen"
+          },
+					"children": [
+				    {
+				      "id": "address",
+				      "type": "text",
+				      "value": "0.0.0.0",
+				      "label": {
+				        "en": "IP Address",
+				        "nl": "IP Adres"
+				      }
+				    }
+		      ]
+		    }
+		  ]
+    }
+  ],
+  "flow": {
+    "triggers": [
+      {
+        "id": "meter_gas_changed",
+        "title": {
+          "en": "The gas meter changed",
+          "nl": "De gasmeter is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "meter_gas",
+            "type": "number",
+            "title": {
+              "en": "m³",
+              "nl": "m³"
+            },
+            "example": 25
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "meter_power_changed",
+        "title": {
+          "en": "The power meter changed",
+          "nl": "De energiemeter is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "meter_power",
+            "type": "number",
+            "title": {
+              "en": "Wh",
+              "nl": "Wh"
+            },
+            "example": 75
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "temperature_state_changed",
+        "title": {
+          "en": "Temperature state changed",
+          "nl": "Temperatuurstand is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "temperature_state",
+            "type": "string",
+            "title": {
+              "en": "state",
+              "nl": "stand"
+            },
+            "example": {
+              "en": "Comfort",
+              "nl": "Comfort"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "temperature_state_is",
+        "title": {
+          "en": "Temperature state !{{is|isn't}}",
+          "nl": "Temperatuurstand !{{is|is niet}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "value": "comfort",
+            "values": [
+              {
+                "id": "comfort",
+                "label": {
+                  "en": "Comfort",
+                  "nl": "Comfort"
+                }
+              },
+              {
+                "id": "home",
+                "label": {
+                  "en": "Home",
+                  "nl": "Thuis"
+                }
+              },
+              {
+                "id": "sleep",
+                "label": {
+                  "en": "Sleep",
+                  "nl": "Slapen"
+                }
+              },
+              {
+                "id": "away",
+                "label": {
+                  "en": "Away",
+                  "nl": "Weg"
+                }
+              },
+              {
+                "id": "none",
+                "label": {
+                  "en": "No state",
+                  "nl": "Geen stand"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "set_temperature_state",
+        "title": {
+          "en": "Set temperature state",
+          "nl": "Stel temperatuurstand in"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "value": "comfort",
+            "values": [
+              {
+                "id": "comfort",
+                "label": {
+                  "en": "Comfort",
+                  "nl": "Comfort"
+                }
+              },
+              {
+                "id": "home",
+                "label": {
+                  "en": "Home",
+                  "nl": "Thuis"
+                }
+              },
+              {
+                "id": "sleep",
+                "label": {
+                  "en": "Sleep",
+                  "nl": "Slapen"
+                }
+              },
+              {
+                "id": "away",
+                "label": {
+                  "en": "Away",
+                  "nl": "Weg"
+                }
+              }
+            ]
+          },
+          {
+            "name": "resume_program",
+            "type": "dropdown",
+            "value": "yes",
+            "values": [
+              {
+                "id": "yes",
+                "label": {
+                  "en": "Resume program afterwards",
+                  "nl": "Hervat programma na wijziging"
+                }
+              },
+              {
+                "id": "no",
+                "label": {
+                  "en": "Disable program",
+                  "nl": "Schakel programma uit"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "enable_program",
+        "title": {
+          "en": "Enable program",
+          "nl": "Zet programma aan"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "disable_program",
+        "title": {
+          "en": "Disable program",
+          "nl": "Zet programma uit"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "update_status",
+        "title": {
+          "en": "Update status",
+          "nl": "Update waardes"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      }
+    ]
+  }
+}

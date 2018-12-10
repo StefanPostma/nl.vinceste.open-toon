@@ -1,0 +1,25 @@
+{
+  "name": "nl.eneco.toon",
+  "version": "1.0.0",
+  "description": "Let Homey control your Toon®!",
+  "main": "app.js",
+  "dependencies": {
+    "homey-log": "^1.0.5",
+    "homey-wifidriver": "^1.0.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "run": "homeyConfig compose && athom project --run",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/athombv/nl.eneco.toon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/athombv/nl.eneco.toon/issues"
+  },
+  "homepage": "https://github.com/athombv/nl.eneco.toon#readme"
+}

@@ -1,0 +1,118 @@
+<script type="text/javascript">
+Homey.setTitle( __('pair.title') );
+$(function() {
+    $('#test-connection').click(function() {
+        $('.mi-device-test').hide();
+        $('.mi-device-error').hide();
+        $('.mi-device-ok').hide();
+		var inputaddress = $('#address').val();
+        if (inputaddress != '') {
+            var device_data = {
+                address: inputaddress,
+            };
+            Homey.emit('testConnection', device_data, function(error, result) {
+                if(error) {
+                    $('.mi-device-error').show();
+                    $('.mi-device-error-msg').html(error.message || error.toString());
+                } else if (result) {
+                    var mideviceinfo = "<h2 data-i18n='pair.philipsbulb'>Philips Light Bulb</h2><div class='info-row'><span class='info-label' data-i18n='pair.powered'>Powered:</span><span class='info-value'> </span></div><div class='info-row'><span class='info-label' data-i18n='pair.dim'>Dim Level:</span><span class='info-value'> "+ result.updateDataSet +"</span></div><div class='info-row'><span class='info-label' data-i18n='pair.colortemperature'>Color Temperature:</span><span class='info-value'> "+ result.updateDataSet +"</span></div>";
+                    $('.mi-device-info').show();
+                    $('.mi-device-info').html(mideviceinfo);
+                    $('.mi-device-test').show();
+                    $('#connect').prop('disabled', false);
+                } else {
+                    $('.mi-device-error').show();
+                    $('.mi-device-error-msg').html( __('pair.unknownerror') );
+                }
+            });
+        } else {
+            $('.mi-device-error').show();
+            $('.mi-device-error-msg').html( __('pair.nosettings') );
+        }
+	});
+	$('#connect').click(function(){
+		var inputaddress = $('#address').val();
+    	var deviceName = $('#GivenName').val();
+        if( inputaddress != '' && deviceName !='') {
+            var device_data = {
+                id: deviceName
+            };
+            var settings = {
+                address: inputaddress,
+            };
+            Homey.addDevice({
+                name  	 : 'ToonDevice',
+                data 	 : device_data,
+                settings : settings
+            }, function(error, result) {
+                if (error) {
+                    $('.mi-device-test').hide();
+                    $('.mi-device-error').show();
+                    $('.mi-device-error-msg').html(error.message || error.toString());
+                }
+                $('.mi-device-test').hide();
+                $('.mi-device-ok').show();
+                Homey.done();
+            })
+        } else {
+            $('.mi-device-test').hide();
+            $('.mi-device-error').show();
+            $('.mi-device-error-msg').html( __('pair.nosettings') );
+        }
+	});
+})
+</script>
+
+<style type="text/css">
+    .mi-device-pairing {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .mi-device-pairing .col1, .mi-device-pairing .col2 {
+        width: 48%;
+    }
+    .mi-device-status, .mi-device-info {
+		display: none;
+	}
+    .mi-device-info {
+        font-size: 12px;
+    }
+    .mi-device-info .info-row {
+        min-width: 150px;
+        padding-bottom: 4px;
+        font-weight: 700;
+    }
+    .mi-device-info .info-label {
+        display: inline-block;
+        min-width: 100px;
+        font-weight: 700;
+    }
+    .form-group input[type="text"] {
+        width: 80% !important;
+    }
+    .buttons, .messages {
+        padding-top: 14px;
+    }
+</style>
+
+<p data-i18n="pair.intro">Enter the details of device.</p>
+<div class="mi-device-pairing">
+    <div class="col1">
+        <div class="form-group">
+            <label for="address" data-i18n="pair.address">IP address</label>
+            <input type="text" class="form-control" id="address" placeholder="192.168.0.100">
+        </div>
+        <div class="form-group">
+            <label for="GivenName" data-i18n="pair.name">Toon Hostname</label>
+            <input type="text" class="form-control" id="GivenName" placeholder="ENECO-001-12391">
+        </div>
+        <div class="form-group buttons">
+            <button id="test-connection" class="button" data-i18n="pair.test">Test Connection</button>
+            <button id="connect" class="button" data-i18n="pair.connect" disabled>Connect</button>
+        </div>
+    </div>
+    <div class="col2">
+        <div class="mi-device-info"></div>
+    </div>
+</div>

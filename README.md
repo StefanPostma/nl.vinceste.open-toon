@@ -14,9 +14,8 @@ DISCLAIMER: Use at own risk, i will not help you open your IPTables.
 
 After install:
 
--fill in unique devicename
--fill in IP
-
+- fill in unique devicename
+- fill in IP
 - Create flow with timer and action Update Waardes (this will update your homey values on given interval)
 
 ###Changelog

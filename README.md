@@ -12,14 +12,7 @@ It can be used after you opened the IPTables at your Toon.
 
 DISCLAIMER: Use at own risk, i will not help you open your IPTables.
 
-After install:
-
-- fill in unique devicename
-- fill in IP
-- Create flow with timer and action Update Waardes (this will update your homey values on given interval)
-
 ###Changelog
 
 0.0.1 :  Still lots to do, currently reading DisplayTemp, CurrentTemp and programstate. Also able to set those.
-
-
+0.0.2 :	 Fixed programstate retrieval, setting program, disabling and enabling program, power meter, added capabilities for the total meter values of energy (both peak and offpeak) and gas. Added flow cards for retrieving meter values.

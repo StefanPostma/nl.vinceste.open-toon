@@ -1,19 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-
 const ToonDevice = require('./device.js');
-// const OAuth2Driver = require('homey-wifidriver').OAuth2Driver;
-
-// const oauth2ClientConfig = {
-// 	url: `https://api.toon.eu/authorize?response_type=code&redirect_uri=https://callback.athom.com/oauth2/callback/&client_id=${Homey.env.TOON_KEY}&tenant_id=eneco`,
-// 	tokenEndpoint: 'https://api.toon.eu/token',
-// 	key: Homey.env.TOON_KEY,
-// 	secret: Homey.env.TOON_SECRET,
-// 	allowMultipleAccounts: true,
-// };
-
-// const API_BASE_URL = 'https://api.toon.eu/toon/v3/';
 
 class ToonDriver extends Homey.Driver  {
 
@@ -45,7 +33,6 @@ class ToonDriver extends Homey.Driver  {
 
 		new Homey.FlowCardAction('set_temperature_state')
 			.register()
-			//.registerRunListener(args => args.device.onCapabilityTemperatureState(args.state, (args.resume_program === 'yes')));
 			.registerRunListener(args => args.device.onCapabilityTemperatureState(args.state, (args.resume_program)));
 
 		new Homey.FlowCardAction('enable_program')
@@ -70,7 +57,6 @@ class ToonDriver extends Homey.Driver  {
 
 		this.log('onInit() -> complete, Flow Cards registered');
 	}
-
 
 	/**
 	 * Always use ToonDevice as device for this driver.

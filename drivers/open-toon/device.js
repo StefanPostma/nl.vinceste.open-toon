@@ -3,9 +3,6 @@
 const Homey = require('homey');
 const rp = require('request-promise-native');
 const WebAPIDevice = require('homey-wifidriver').WebAPIDevice;
-
-//const OAuth2Device = require('homey-wifidriver').OAuth2Device;
-
 const API_BASE_URL = '';
 const TEMPERATURE_STATES = {
 	comfort: 0,
@@ -34,16 +31,12 @@ class ToonDevice extends WebAPIDevice {
 		this.powerUsage = {};
 		this.thermostatInfo = {};
 
-		// Indicate Homey is connecting to Toon
-		//	this.setUnavailable(Homey.__('connecting'));
-
 		// Register capability listeners
 		this.registerCapabilityListener('temperature_state', this.onCapabilityTemperatureState.bind(this));
 		this.registerCapabilityListener('target_temperature', this.onCapabilityTargetTemperature.bind(this));
 
 		// Fetch initial data
 		await this.getStatusUpdate();
-		// Paul Heeringa: Added clas calls
 		await this.getStatusUpdatePowerUsage();
 		await this.getStatusUpdateTotals()
 
@@ -77,7 +70,7 @@ class ToonDevice extends WebAPIDevice {
 	 * @returns {Promise}
 	 */
 	async getStatusUpdate() {
-		
+
 		try {
 			/**
 			 * This method will retrieve temperature and state data from the Toon API.
@@ -98,19 +91,14 @@ class ToonDevice extends WebAPIDevice {
 		} catch (err) {
 			this.error('failed to retrieve status update', err.message);
 		}
-	
-		// const data = await this.apiCallGet({ uri: 'http://' + this.getSetting('address') + '/happ_thermstat?action=getThermostatInfo' });
-		//this._processStatusUpdate(data);
-
 	}
-	
+
 	/**
 	 * This method will retrieve electricity data from the Toon API.
 	 * @returns {Promise}
-	 * Paul Heeringa: Added class
 	 */
 	async getStatusUpdatePowerUsage() {
-		
+
 		try {
 			/**
 			 * This method will retrieve power usage data from the Toon API.
@@ -132,15 +120,14 @@ class ToonDevice extends WebAPIDevice {
 			this.error('failed to retrieve status update', err.message);
 		}
 
-	}	
-	
+	}
+
 	/**
 	 * This method will retrieve electricity and gas data from the Toon API.
 	 * @returns {Promise}
-	 * Paul Heeringa: Added class
 	 */
 	async getStatusUpdateTotals() {
-		
+
 		try {
 			/**
 			 * This method will retrieve power usage data from the Toon API.
@@ -162,7 +149,7 @@ class ToonDevice extends WebAPIDevice {
 			this.error('failed to retrieve status update', err.message);
 		}
 
-	}	
+	}
 
 	/**
 	 * Set the state of the device, overrides the program.
@@ -194,12 +181,6 @@ class ToonDevice extends WebAPIDevice {
 		} catch (err) {
 			this.error('failed to set status update', err.message);
 		}
-		// try {
-		// 	await this.apiCallPut({ uri: `${this.getData().agreementId}/thermostat` }, data);
-		// } catch (err) {
-		// 	this.error(`failed to set temperature state to ${state} (${stateId})`, err.stack);
-		// 	throw err;
-		// }
 
 		this.log(`success setting temperature state to ${state} (${stateId})`);
 		return state;
@@ -243,13 +224,9 @@ class ToonDevice extends WebAPIDevice {
 	/**
 	 * Enable the temperature program.
 	 * @returns {*}
-	 * Paul Heeringa: Replaced apiCallPut with RP method
 	 */
 	enableProgram() {
 		this.log('try to enable program');
-		//const data = { ...this.thermostatInfo, programState: 1 };
-		//return this.apiCallPut({ uri: 'http://' + this.getSetting('address') + '/happ_thermstat?action=changeSchemeState&state=1' }, data)
-
 		try {
 			return rp({
 				method: 'GET',
@@ -272,13 +249,9 @@ class ToonDevice extends WebAPIDevice {
 	/**
 	 * Disable the temperature program.
 	 * @returns {*}
-	 * Paul Heeringa: Replaced apiCallPut with RP method
 	 */
 	disableProgram() {
 		this.log('try to disable program');
-		//const data = { ...this.thermostatInfo, programState: 0 };
-		//return this.apiCallPut({ uri: 'http://' + this.getSetting('address') + '/happ_thermstat?action=changeSchemeState&state=0' }, data)
-		
 		try {
 			return rp({
 				method: 'GET',
@@ -294,7 +267,7 @@ class ToonDevice extends WebAPIDevice {
 			})
 		} catch (err) {
 			this.error('failed to disable program', err.message);
-		}		
+		}
 	}
 
 	/**
@@ -307,9 +280,6 @@ class ToonDevice extends WebAPIDevice {
 		this.log('_processStatusUpdate', new Date().getTime());
 
 		// Data needs to be unwrapped
-		//if (data && data.hasOwnProperty('body')) {
-
-			//this.log('test by stefan postma:', data);
 			const dataRootObject = data;
 			this.log('show data:', dataRootObject);
 
@@ -320,33 +290,23 @@ class ToonDevice extends WebAPIDevice {
 			 	this._processPowerUsageData(dataRootObject.powerUsage);
 			}
 
-			// Paul Heeringa
 			// Check for gas usage information
 			if (dataRootObject.hasOwnProperty('dev_2.1')) {
 				this.log ('Update gas usage')
 			 	this._processGasUsageData(dataRootObject['dev_2.1'].CurrentGasQuantity);
 			}
 
-			// Paul Heeringa
 			// Check for power usage information
 			if (dataRootObject.hasOwnProperty('dev_2.4') || dataRootObject.hasOwnProperty('dev_2.6')) {
 				this.log ('Update gas usage')
 			 	this._processPowerUsageData(dataRootObject);
 			}
-			
-			/* Paul Heeringa: Original action
-			Check for gas usage information
-			if (dataRootObject.hasOwnProperty('gasUsage')) {
-				this.log ('Update gas usage')
-			 	this._processGasUsageData(dataRootObject.gasUsage);
-			}*/
 
 			// Check for thermostat information
 			if (dataRootObject.hasOwnProperty('currentTemp') && dataRootObject.hasOwnProperty('currentSetpoint')) {
 				this.log ('Update thermostatinfo usage')
 				this._processThermostatInfoData(dataRootObject);
 			}
-		//}
 	}
 
 	/**
@@ -379,15 +339,15 @@ class ToonDevice extends WebAPIDevice {
 			const usage2 = Math.trunc(data['dev_2.4'].CurrentElectricityQuantity / 1000); // convert from Wh to KWh
 			this.log('getThermostatData() -> powerUsage -> meter_power -> CurrentElectricityQuantity(Peak):', data['dev_2.4'].CurrentElectricityQuantity);
 			this.setCapabilityValue('meter_power.peak', usage2);
-		}		
+		}
 
 		// Paul Heeringa: Power meter - Off peak
 		if (data['dev_2.6'].hasOwnProperty('CurrentElectricityQuantity')) {
 			const usage3 = Math.trunc(data['dev_2.6'].CurrentElectricityQuantity / 1000); // convert from Wh to KWh
 			this.log('getThermostatData() -> powerUsage -> meter_power -> CurrentElectricityQuantity(OffPeak):', data['dev_2.6'].CurrentElectricityQuantity );
 			this.setCapabilityValue('meter_power.offPeak', usage3);
-		}	
-		
+		}
+
 	}
 
 	/**
@@ -406,11 +366,9 @@ class ToonDevice extends WebAPIDevice {
 
 		// Store new values
 		// Paul Heeringa: Instead of the day usage, the meter value is applied
-		//if (data.hasOwnProperty('CurrentGasQuantity')) {
 			const meterGas = Math.trunc(data / 1000); // L -> m3
 			this.log('getThermostatData() -> gasUsage -> meter_gas', meterGas);
 			this.setCapabilityValue('meter_gas', meterGas);
-		//}
 	}
 
 	/**
@@ -438,8 +396,8 @@ class ToonDevice extends WebAPIDevice {
 				this.setCapabilityValue('target_temperature', Math.round((dataObject.currentSetpoint / 100) * 10) / 10);
 				this.log('received currentSetpoint data', dataObject.currentSetpoint);
 			}
-			if (dataObject.hasOwnProperty('activeState')) {	
-				// Paul Heeringa: Parsed variable "dataObject.activeState" as int, else it the getKey class would return "undefined". 
+			if (dataObject.hasOwnProperty('activeState')) {
+				// Paul Heeringa: Parsed variable "dataObject.activeState" as int, else it the getKey class would return "undefined".
 				this.setCapabilityValue('temperature_state', ToonDevice.getKey(TEMPERATURE_STATES, parseInt(dataObject.activeState)));
 				this.log('received activeState data', dataObject.activeState, "(", ToonDevice.getKey(TEMPERATURE_STATES, parseInt(dataObject.activeState)),")");
 			}
@@ -529,7 +487,7 @@ class ToonDevice extends WebAPIDevice {
 	static getKey(obj, val) {
 		return Object.keys(obj).find(key => obj[key] === val);
 	}
-	
+
 
 }
 

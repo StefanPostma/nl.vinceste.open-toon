@@ -41,13 +41,12 @@ class ToonDriver extends Homey.Driver  {
 
 		new Homey.FlowCardCondition('temperature_state_is')
 			.register()
-			.registerRunListener(args =>
-				Promise.resolve(args.device.getCapabilityValue('temperature_state') === args.state));
+			.registerRunListener(args => Promise.resolve(args.device.getCapabilityValue('temperature_state') === args.state));
 
 		new Homey.FlowCardAction('set_temperature_state')
 			.register()
-			.registerRunListener(args =>
-				args.device.onCapabilityTemperatureState(args.state, (args.resume_program === 'yes')));
+			//.registerRunListener(args => args.device.onCapabilityTemperatureState(args.state, (args.resume_program === 'yes')));
+			.registerRunListener(args => args.device.onCapabilityTemperatureState(args.state, (args.resume_program)));
 
 		new Homey.FlowCardAction('enable_program')
 			.register()
@@ -60,6 +59,14 @@ class ToonDriver extends Homey.Driver  {
 		new Homey.FlowCardAction('update_status')
 			.register()
 			.registerRunListener(args => args.device.getStatusUpdate());
+
+		new Homey.FlowCardAction('update_powerusage')
+			.register()
+			.registerRunListener(args => args.device.getStatusUpdatePowerUsage());
+
+		new Homey.FlowCardAction('update_metertotals')
+			.register()
+			.registerRunListener(args => args.device.getStatusUpdateTotals());
 
 		this.log('onInit() -> complete, Flow Cards registered');
 	}

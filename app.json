@@ -1,6 +1,6 @@
 {
   "id": "nl.vinceste.open-toon",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "name": {
@@ -12,7 +12,7 @@
     "nl": "Open - Toon®"
   },
   "author": {
-    "name": "Vinceste IT"
+    "name": "v0.0.1: Vinceste IT, v0.0.2: Paul Heeringa"
   },
   "category": "climate",
   "images": {
@@ -83,7 +83,8 @@
         "target_temperature",
         "measure_temperature",
         "temperature_state",
-        "meter_power",
+        "meter_power.peak",
+        "meter_power.offPeak",
         "measure_power",
         "meter_gas"
       ],
@@ -92,7 +93,19 @@
           "step": 0.5,
           "min": 6,
           "max": 30
-        }
+        },	
+        "meter_power.peak": {
+          "title": {
+            "en": "Power meter peak (total)",
+            "nl": "Stroom meterstand piek"
+          }
+        },
+        "meter_power.offPeak": {
+          "title": {
+            "en": "Power meter off-peak (total)",
+            "nl": "Stroom meterstand dal"
+          }
+        }		
       },
       "mobile": {
         "components": [
@@ -105,7 +118,8 @@
             "capabilities": [
               "measure_temperature",
               "measure_power",
-              "meter_power",
+			  "meter_power.peak",
+			  "meter_power.offPeak",			  
               "meter_gas"
             ]
           },
@@ -393,6 +407,34 @@
         "title": {
           "en": "Update status",
           "nl": "Update waardes"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "update_powerusage",
+        "title": {
+          "en": "Update power usage",
+          "nl": "Update stroom gebruik"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "update_metertotals",
+        "title": {
+          "en": "Update meter totals",
+          "nl": "Update meterstanden"
         },
         "args": [
           {

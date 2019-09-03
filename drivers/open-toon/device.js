@@ -81,7 +81,7 @@ class ToonDevice extends WebAPIDevice {
 				url: 'http://' + this.getSetting('address') + '/happ_thermstat?action=getThermostatInfo',
 				json: true
 			}).then(data => {
-				this.log('opgehaalde data van update, ', data);
+				this.log('{getStatusUpdate} opgehaalde data van update, ', data);
 				this._processStatusUpdate(data);
 			}).catch( err => {
 				if( err.error ) {
@@ -109,7 +109,7 @@ class ToonDevice extends WebAPIDevice {
 				url: 'http://' + this.getSetting('address') + '/happ_pwrusage?action=GetCurrentUsage',
 				json: true
 			}).then(data => {
-				this.log('opgehaalde data van update, ', data);
+				this.log('{getStatusUpdatePowerUsage} opgehaalde data van update, ', data);
 				this._processStatusUpdate(data);
 			}).catch( err => {
 				if( err.error ) {
@@ -138,7 +138,7 @@ class ToonDevice extends WebAPIDevice {
 				url: 'http://' + this.getSetting('address') + '/hdrv_zwave?action=getDevices.json',
 				json: true
 			}).then(data => {
-				this.log('opgehaalde data van update, ', data);
+				this.log('{getStatusUpdateTotals} opgehaalde data van update, ', data);
 				this._processStatusUpdate(data);
 			}).catch( err => {
 				if( err.error ) {
@@ -281,7 +281,6 @@ class ToonDevice extends WebAPIDevice {
 
 		// Data needs to be unwrapped
 			const dataRootObject = data;
-			this.log('show data:', dataRootObject);
 
 			// Check for power usage information
 			// update powerusage with new extra call
@@ -316,8 +315,6 @@ class ToonDevice extends WebAPIDevice {
 	 */
 	_processPowerUsageData(data = {}) {
 		this.log('process received powerUsage data');
-		this.log(data);
-
 		// Store data object
 		this.powerUsage = data;
 
@@ -336,16 +333,28 @@ class ToonDevice extends WebAPIDevice {
 
 		// Paul Heeringa: Power meter - Peak
 		if (data['dev_2.4'].hasOwnProperty('CurrentElectricityQuantity')) {
-			const usage2 = Math.trunc(data['dev_2.4'].CurrentElectricityQuantity / 1000); // convert from Wh to KWh
-			this.log('getThermostatData() -> powerUsage -> meter_power -> CurrentElectricityQuantity(Peak):', data['dev_2.4'].CurrentElectricityQuantity);
-			this.setCapabilityValue('meter_power.peak', usage2);
+
+			// If there is only one tariff, 2.4 = 'NaN' and 2.2 should be used
+			if (data['dev_2.4'].CurrentElectricityQuantity != 'NaN') {
+				const usage2 = Math.trunc(data['dev_2.4'].CurrentElectricityQuantity / 1000); // convert from Wh to KWh
+				this.log('getThermostatData() -> powerUsage -> meter_power -> CurrentElectricityQuantity(Peak):', data['dev_2.4'].CurrentElectricityQuantity);
+				this.setCapabilityValue('meter_power.peak', usage2);
+			} else {
+				const usage2 = Math.trunc(data['dev_2.2'].CurrentElectricityQuantity / 1000); // convert from Wh to KWh
+				this.log('getThermostatData() -> powerUsage -> meter_power -> CurrentElectricityQuantity(SingleTariff):', data['dev_2.2'].CurrentElectricityQuantity);
+				this.setCapabilityValue('meter_power.peak', usage2);
+			}
+
 		}
 
 		// Paul Heeringa: Power meter - Off peak
 		if (data['dev_2.6'].hasOwnProperty('CurrentElectricityQuantity')) {
-			const usage3 = Math.trunc(data['dev_2.6'].CurrentElectricityQuantity / 1000); // convert from Wh to KWh
-			this.log('getThermostatData() -> powerUsage -> meter_power -> CurrentElectricityQuantity(OffPeak):', data['dev_2.6'].CurrentElectricityQuantity );
-			this.setCapabilityValue('meter_power.offPeak', usage3);
+			// If there is only one tariff, 2.6 = 'NaN'
+			if (data['dev_2.6'].CurrentElectricityQuantity != 'NaN') {
+				const usage3 = Math.trunc(data['dev_2.6'].CurrentElectricityQuantity / 1000); // convert from Wh to KWh
+				this.log('getThermostatData() -> powerUsage -> meter_power -> CurrentElectricityQuantity(OffPeak):', data['dev_2.6'].CurrentElectricityQuantity );
+				this.setCapabilityValue('meter_power.offPeak', usage3);
+			}
 		}
 
 	}
@@ -359,7 +368,6 @@ class ToonDevice extends WebAPIDevice {
 	 */
 	_processGasUsageData(data = {}) {
 		this.log('process received gasUsage data');
-		this.log(data);
 
 		// Store data object
 		this.gasUsage = data;
@@ -378,13 +386,11 @@ class ToonDevice extends WebAPIDevice {
 	 */
 	_processThermostatInfoData(data = {}) {
 		this.log('process received thermostatInfo data');
-		this.log('thermostaat informatie:' ,data);
 
 		// Store data object
 		this.thermostatInfo = data;
 		try {
 			const dataObject = data;
-			this.log('thermostaat informatie parsed:' ,dataObject);
 			this.log('received currentSetpoint data', dataObject.currentSetpoint);
 
 			// Store new values

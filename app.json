@@ -1,6 +1,6 @@
 {
   "id": "nl.vinceste.open-toon",
-  "version": "0.0.2a",
+  "version": "0.0.2b",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "name": {
@@ -12,7 +12,7 @@
     "nl": "Open - Toon®"
   },
   "author": {
-    "name": "Vinceste IT, Paul Heeringa"
+    "name": "Vinceste IT"
   },
   "category": "climate",
   "images": {

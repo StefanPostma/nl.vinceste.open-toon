@@ -1,7 +1,7 @@
 {
   "id": "nl.vinceste.open-toon",
-  "version": "0.0.3",
-  "compatibility": ">=1.5.0",
+  "version": "1.0.0",
+  "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
     "en": "Open-Toon®",
@@ -88,6 +88,9 @@
         "measure_power",
         "meter_gas"
       ],
+      "energy": {
+        "cumulative": true
+      },
       "capabilitiesOptions": {
         "target_temperature": {
           "step": 0.5,
@@ -106,36 +109,6 @@
             "nl": "Stroom meterstand dal"
           }
         }
-      },
-      "mobile": {
-        "components": [
-          {
-            "id": "icon",
-            "capabilities": []
-          },
-          {
-            "id": "sensor",
-            "capabilities": [
-              "measure_temperature",
-              "measure_power",
-			        "meter_power.peak",
-			        "meter_power.offPeak",
-              "meter_gas"
-            ]
-          },
-          {
-            "capabilities": [
-              "temperature_state"
-            ],
-            "id": "picker"
-          },
-          {
-            "id": "thermostat",
-            "capabilities": [
-              "target_temperature"
-            ]
-          }
-        ]
       },
       "pair": [
 				{

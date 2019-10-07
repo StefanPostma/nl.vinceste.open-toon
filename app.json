@@ -1,7 +1,7 @@
 {
   "id": "nl.vinceste.open-toon",
-  "version": "0.0.2",
-  "compatibility": ">=1.5.0",
+  "version": "1.0.0",
+  "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
     "en": "Open-Toon®",
@@ -12,7 +12,7 @@
     "nl": "Open - Toon®"
   },
   "author": {
-    "name": "v0.0.1: Vinceste IT, v0.0.2: Paul Heeringa"
+    "name": "Vinceste IT"
   },
   "category": "climate",
   "images": {
@@ -88,12 +88,15 @@
         "measure_power",
         "meter_gas"
       ],
+      "energy": {
+        "cumulative": true
+      },
       "capabilitiesOptions": {
         "target_temperature": {
           "step": 0.5,
           "min": 6,
           "max": 30
-        },	
+        },
         "meter_power.peak": {
           "title": {
             "en": "Power meter peak (total)",
@@ -105,37 +108,7 @@
             "en": "Power meter off-peak (total)",
             "nl": "Stroom meterstand dal"
           }
-        }		
-      },
-      "mobile": {
-        "components": [
-          {
-            "id": "icon",
-            "capabilities": []
-          },
-          {
-            "id": "sensor",
-            "capabilities": [
-              "measure_temperature",
-              "measure_power",
-			  "meter_power.peak",
-			  "meter_power.offPeak",			  
-              "meter_gas"
-            ]
-          },
-          {
-            "capabilities": [
-              "temperature_state"
-            ],
-            "id": "picker"
-          },
-          {
-            "id": "thermostat",
-            "capabilities": [
-              "target_temperature"
-            ]
-          }
-        ]
+        }
       },
       "pair": [
 				{

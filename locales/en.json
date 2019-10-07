@@ -3,8 +3,7 @@
   "connecting": "Busy Connecting...",
   "offline": "Your Toon cannot be reached",
   "initialization_error": "Something bad happend, error: __error__",
-  "unauthenticated": "Toon is de verbinding kwijt, voeg het apparaat opnieuw toe",
-  "repair_migration_v3": "Vanwege de incompatibiliteit tussen Toon API versies moet dit apparaat opnieuw worden toegevoegd.",
+  "unauthenticated": "Toon lost connection try adding it again",
   "pair": {
     "title": "Add Open-Toon Device ",
     "name": "Choose an unique name!",
@@ -24,9 +23,9 @@
     "password": "Password",
     "found_toon": "Homey found a Toon®!",
     "no_toon": "Homey cannot find Toon® ...",
-    "no_toon_explained": "Het lijkt er op dat er geen nieuw Toon",
+    "no_toon_explained": "It looks like there isn't a new Toon found",
     "found_toon_explained": "Toon® is succesfully connected!",
-    "retry": "Try again my friend",
+    "retry": "Try again",
     "installed_toon": "This device already exists",
     "unreachable": "Unreachable",
     "installed_toon_explained": "This is not a unique device"

@@ -4,7 +4,7 @@
   "description": "Let Homey control your Toon®!",
   "main": "app.js",
   "dependencies": {
-    "homey-log": "^1.0.5",
+    "homey-log": "^1.0.6",
     "homey-wifidriver": "^1.0.8"
   },
   "devDependencies": {},

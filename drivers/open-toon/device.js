@@ -161,13 +161,10 @@ class ToonDevice extends WebAPIDevice {
 	async getWater() {
 
 		try {
-			/**
-			 * This method will retrieve water usage data from the Toon.
-			 * @returns {Promise}
-			 */
 			return rp({
 				method: 'GET',
-				url: 'http://' + this.getSetting('address') + '/mobile/water_mobile.json?tst=" + Math.random();' + .....,
+				//url: 'http://' + this.getSetting('address') + '/mobile/water_mobile.json?tst=" + Math.random();';
+				url: 'http://' + this.getSetting('address') + '/mobile/water_mobile.json';
 				json: true
 			}).then(data => {
 				this.log('{getWater} opgehaalde data van update, ', data);

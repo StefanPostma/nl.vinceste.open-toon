@@ -1,6 +1,6 @@
 {
   "id": "nl.vinceste.open-toon",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -87,6 +87,8 @@
         "meter_power.offPeak",
         "measure_power",
         "meter_gas"
+		"measure_water"
+		"meter_water"
       ],
       "energy": {
         "cumulative": true
@@ -120,7 +122,7 @@
           "type": "group",
           "label": {
             "en": "Local Toon Settings",
-						"nl": "Lokale Toon Instellingen"
+			"nl": "Lokale Toon Instellingen"
           },
 					"children": [
 				    {
@@ -177,6 +179,31 @@
             "title": {
               "en": "Wh",
               "nl": "Wh"
+            },
+            "example": 75
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+	  {
+        "id": "meter_water_changed",
+        "title": {
+          "en": "The water meter changed",
+          "nl": "De watermeter is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "meter_water",
+            "type": "number",
+            "title": {
+              "en": "m3",
+              "nl": "m3"
             },
             "example": 75
           }
@@ -394,6 +421,20 @@
         "title": {
           "en": "Update power usage",
           "nl": "Update stroom gebruik"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+	  {
+        "id": "update_water",
+        "title": {
+          "en": "Update water",
+          "nl": "Update water"
         },
         "args": [
           {

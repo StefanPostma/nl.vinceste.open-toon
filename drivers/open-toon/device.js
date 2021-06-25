@@ -40,7 +40,7 @@ class ToonDevice extends WebAPIDevice {
 		await this.getStatusUpdate();
 		await this.getStatusUpdatePowerUsage();
 		await this.getWater();
-		await this.getStatusUpdateTotals()
+		await this.getStatusUpdateTotals();
 
 		this.log('init ToonDevice');
 	}
@@ -163,7 +163,7 @@ class ToonDevice extends WebAPIDevice {
 		try {
 			return rp({
 				method: 'GET',
-				url: 'http://' + this.getSetting('address') + '/mobile/water_mobile.json';
+				url: 'http://' + this.getSetting('address') + '/mobile/water_mobile.json',
 				json: true
 			}).then(data => {
 				this.log('{getWater} opgehaalde data van update, ', data);

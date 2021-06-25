@@ -192,6 +192,31 @@
         ]
       },
 	  {
+        "id": "measure_water_changed",
+        "title": {
+          "en": "The water flow changed",
+          "nl": "De waterflow is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "measure_water",
+            "type": "number",
+            "title": {
+              "en": "l/min",
+              "nl": "l/min"
+            },
+            "example": 75
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+	  	  {
         "id": "meter_water_changed",
         "title": {
           "en": "The water meter changed",

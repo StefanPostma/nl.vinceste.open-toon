@@ -163,7 +163,6 @@ class ToonDevice extends WebAPIDevice {
 		try {
 			return rp({
 				method: 'GET',
-				//url: 'http://' + this.getSetting('address') + '/mobile/water_mobile.json?tst=" + Math.random();';
 				url: 'http://' + this.getSetting('address') + '/mobile/water_mobile.json';
 				json: true
 			}).then(data => {

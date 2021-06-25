@@ -86,8 +86,8 @@
         "meter_power.peak",
         "meter_power.offPeak",
         "measure_power",
-        "meter_gas"
-		"measure_water"
+        "meter_gas",
+		"measure_water",
 		"meter_water"
       ],
       "energy": {

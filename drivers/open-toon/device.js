@@ -343,6 +343,8 @@ class ToonDevice extends WebAPIDevice {
 			if (dataRootObject.hasOwnProperty('water')) {
 				this.log ('Update water usage')
 			 	this._processWaterData(dataRootObject.water);
+				this.setCapabilityValue('measure_water', 234);
+				this.setCapabilityValue('meter_water', 4567);
 			}
 			
 			// Check for thermostat information
@@ -367,8 +369,6 @@ class ToonDevice extends WebAPIDevice {
 		if (data.hasOwnProperty('value')) {
 			this.log('getThermostatData() -> powerUsage -> measure_power -> value:', data.value);
 			this.setCapabilityValue('measure_power', data.value);
-			this.setCapabilityValue('measure_water', 121);
-			this.setCapabilityValue('meter_water', 123456);
 		}
 
 		// Store new values
@@ -414,20 +414,12 @@ class ToonDevice extends WebAPIDevice {
 		// Store data object
 		this.water = data;
 		
-		// Store new values
-		if (data.hasOwnProperty('flow')) {
-			const waterflow = data.flow
-			this.log('getThermostatData() -> waterFlow :' +  waterflow);
-			this.setCapabilityValue('measure_water', data.flow);
-		}
-
-		// Store new values
-		if (data.hasOwnProperty('value')) {
-			const waterquantity = data.value;
-			this.log('getThermostatData() -> waterquantity:' + waterquantity);
-			this.setCapabilityValue('meter_water', data.value);
-		}
-
+		const waterflow = data.flow;
+		const waterquantity = data.value;
+		this.log('getThermostatData() -> waterFlow :' +  waterflow);
+		this.log('getThermostatData() -> waterquantity:' + waterquantity);
+		this.setCapabilityValue('meter_water', data.value);
+		this.setCapabilityValue('measure_water', data.flow);
 	}
 
 

@@ -403,7 +403,8 @@ class ToonDevice extends WebAPIDevice {
 		// Store data object
 		this.water = data;
 		const waterflow = data.flow;
-		const waterquantity = data.value / 1000.000;
+		//const waterquantity = data.value / 1000.000;
+		const waterquantity = data.total / 1000.000;
 		this.log('getThermostatData() -> waterFlow :' +  waterflow);
 		this.log('getThermostatData() -> waterquantity:' + waterquantity);
 		this.setCapabilityValue('meter_water', waterquantity);

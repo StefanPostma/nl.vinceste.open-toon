@@ -367,6 +367,8 @@ class ToonDevice extends WebAPIDevice {
 		if (data.hasOwnProperty('value')) {
 			this.log('getThermostatData() -> powerUsage -> measure_power -> value:', data.value);
 			this.setCapabilityValue('measure_power', data.value);
+			this.setCapabilityValue('measure_water', 121);
+			this.setCapabilityValue('meter_water', 123456);
 		}
 
 		// Store new values

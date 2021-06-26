@@ -333,9 +333,7 @@ class ToonDevice extends WebAPIDevice {
 			// Check for water information by oepi-loepi
 			if (dataRootObject.hasOwnProperty('water')) {
 				this.log ('Update water usage')
-			 	//this._processWaterData(dataRootObject.water);
-				this.setCapabilityValue('measure_water', 234);
-				this.setCapabilityValue('meter_water', 4567);
+			 	this._processWaterData(dataRootObject.water);
 			}
 			
 			// Check for thermostat information
@@ -404,13 +402,12 @@ class ToonDevice extends WebAPIDevice {
 
 		// Store data object
 		this.water = data;
-		
 		const waterflow = data.flow;
 		const waterquantity = data.value;
 		this.log('getThermostatData() -> waterFlow :' +  waterflow);
 		this.log('getThermostatData() -> waterquantity:' + waterquantity);
-		this.setCapabilityValue('meter_water', data.value);
-		this.setCapabilityValue('measure_water', data.flow);
+		this.setCapabilityValue('meter_water', waterquantity);
+		this.setCapabilityValue('measure_water', waterflow);
 	}
 
 

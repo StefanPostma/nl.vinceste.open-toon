@@ -158,7 +158,7 @@ class ToonDevice extends WebAPIDevice {
 	 * This method will retrieve water data from the Toon.
 	 * by oepi-loepi
 	 * @returns {Promise}
-	 *  {\"result\":\"ok\",\"water\": {\"flow\":0, \"value\":1668, \"avgValue\":200}}
+	 * {\"result\":\"ok\",\"water\": {\"flow\":0, \"value\":1668, \"avgValue\":200}}
 	 */
 	async getWater() {
 		try {

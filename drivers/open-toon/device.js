@@ -40,7 +40,7 @@ class ToonDevice extends WebAPIDevice {
 		await this.getStatusUpdate();
 		await this.getStatusUpdatePowerUsage();
 		//await this.getWater();
-		await this.getWaterTest();
+		await this.getWater();
 		await this.getStatusUpdateTotals();
 
 		this.log('init ToonDevice');
@@ -131,8 +131,6 @@ class ToonDevice extends WebAPIDevice {
 	 */
 	async getStatusUpdateTotals() {
 
-		var data = '{"result":"ok","water": {"flow":0, "value":1668, "avgValue":200}}'
-        console.log(data)
 		try {
 			/**
 			 * This method will retrieve power usage data from the Toon API.
@@ -166,7 +164,7 @@ class ToonDevice extends WebAPIDevice {
 		try {
 			return rp({
 				method: 'GET',
-				url: 'http://' + this.getSetting('address') + '/mobile/water_mobile.json',
+				url: 'http://' + this.getSetting('address') + '/water.html',
 				json: true
 			}).then(data => {
 				this.log('{getWater} opgehaalde data van update, ', data);
@@ -181,14 +179,7 @@ class ToonDevice extends WebAPIDevice {
 		}
 	}
 
-	async getWaterTest() {
-		this.log('Sending Water data');
-		const data = '{"result":"ok","water": {"flow":12, "value":166811, "avgValue":200}}';
-		this._processStatusUpdate(data);
-
-	}	
 	
-
 	/**
 	 * Set the state of the device, overrides the program.
 	 * @param state ['away', 'home', 'sleep', 'comfort']

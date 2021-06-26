@@ -39,7 +39,8 @@ class ToonDevice extends WebAPIDevice {
 		// Fetch initial data
 		await this.getStatusUpdate();
 		await this.getStatusUpdatePowerUsage();
-		await this.getWater();
+		//await this.getWater();
+		await this.getWaterTest();
 		await this.getStatusUpdateTotals();
 
 		this.log('init ToonDevice');
@@ -130,6 +131,8 @@ class ToonDevice extends WebAPIDevice {
 	 */
 	async getStatusUpdateTotals() {
 
+		var data = '{"result":"ok","water": {"flow":0, "value":1668, "avgValue":200}}'
+        console.log(data)
 		try {
 			/**
 			 * This method will retrieve power usage data from the Toon API.
@@ -157,9 +160,9 @@ class ToonDevice extends WebAPIDevice {
 	 * This method will retrieve water data from the Toon.
 	 * by oepi-loepi
 	 * @returns {Promise}
+	 *  {\"result\":\"ok\",\"water\": {\"flow\":0, \"value\":1668, \"avgValue\":200}}
 	 */
 	async getWater() {
-
 		try {
 			return rp({
 				method: 'GET',
@@ -176,9 +179,14 @@ class ToonDevice extends WebAPIDevice {
 		} catch (err) {
 			this.error('failed to retrieve status update', err.message);
 		}
-
 	}
-	
+
+	async getWaterTest() {
+		this.log('Sending Water data');
+		const data = '{"result":"ok","water": {"flow":0, "value":1668, "avgValue":200}}';
+		this._processStatusUpdate(data);
+
+	}	
 	
 
 	/**

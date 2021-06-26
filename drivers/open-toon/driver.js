@@ -53,7 +53,7 @@ class ToonDriver extends Homey.Driver  {
 
 		new Homey.FlowCardAction('update_water')
 			.register()
-			.registerRunListener(args => args.device.getWater());
+			.registerRunListener(args => args.device.getWaterTest());
 			
 		new Homey.FlowCardAction('update_metertotals')
 			.register()

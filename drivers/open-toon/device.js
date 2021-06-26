@@ -183,7 +183,7 @@ class ToonDevice extends WebAPIDevice {
 
 	async getWaterTest() {
 		this.log('Sending Water data');
-		const data = '{"result":"ok","water": {"flow":0, "value":1668, "avgValue":200}}';
+		const data = '{"result":"ok","water": {"flow":12, "value":166811, "avgValue":200}}';
 		this._processStatusUpdate(data);
 
 	}	
@@ -416,14 +416,14 @@ class ToonDevice extends WebAPIDevice {
 		if (data.hasOwnProperty('flow')) {
 			const waterflow = data.flow
 			this.log('getThermostatData() -> waterFlow :' +  waterflow);
-			this.setCapabilityValue('measure_water', waterflow);
+			this.setCapabilityValue('measure_water', data.flow);
 		}
 
 		// Store new values
 		if (data.hasOwnProperty('value')) {
 			const waterquantity = data.value;
 			this.log('getThermostatData() -> waterquantity:' + waterquantity);
-			this.setCapabilityValue('meter_water', waterquantity);
+			this.setCapabilityValue('meter_water', data.value);
 		}
 
 	}

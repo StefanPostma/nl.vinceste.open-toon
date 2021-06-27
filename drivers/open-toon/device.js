@@ -39,7 +39,6 @@ class ToonDevice extends WebAPIDevice {
 		// Fetch initial data
 		await this.getStatusUpdate();
 		await this.getStatusUpdatePowerUsage();
-		//await this.getWater();
 		await this.getWater();
 		await this.getStatusUpdateTotals();
 
@@ -403,14 +402,15 @@ class ToonDevice extends WebAPIDevice {
 		// Store data object
 		this.water = data;
 		const waterflow = data.flow;
-		//const waterquantity = data.value / 1000.000;
+		const watertoday = data.value / 1000.000;
 		const waterquantity = data.total / 1000.000;
 		this.log('getThermostatData() -> waterFlow :' +  waterflow);
+		this.log('getThermostatData() -> today:' + watertoday);
 		this.log('getThermostatData() -> waterquantity:' + waterquantity);
-		this.setCapabilityValue('meter_water', waterquantity);
+		this.setCapabilityValue('meter_water.today', watertoday);
+		this.setCapabilityValue('meter_water.total', waterquantity);
 		this.setCapabilityValue('measure_water', waterflow);
 	}
-
 
 
 	/**

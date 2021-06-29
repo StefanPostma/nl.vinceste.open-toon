@@ -28,6 +28,7 @@ class ToonDevice extends WebAPIDevice {
 
 		// Store raw data
 		this.gasUsage = {};
+		this.water = {};
 		this.powerUsage = {};
 		this.thermostatInfo = {};
 
@@ -38,7 +39,8 @@ class ToonDevice extends WebAPIDevice {
 		// Fetch initial data
 		await this.getStatusUpdate();
 		await this.getStatusUpdatePowerUsage();
-		await this.getStatusUpdateTotals()
+		await this.getWater();
+		await this.getStatusUpdateTotals();
 
 		this.log('init ToonDevice');
 	}
@@ -150,7 +152,33 @@ class ToonDevice extends WebAPIDevice {
 		}
 
 	}
+	
+	/**
+	 * This method will retrieve water data from the Toon.
+	 * by oepi-loepi
+	 * @returns {Promise}
+	 * {\"result\":\"ok\",\"water\": {\"flow\":0, \"value\":1668, \"avgValue\":200}}
+	 */
+	async getWater() {
+		try {
+			return rp({
+				method: 'GET',
+				url: 'http://' + this.getSetting('address') + '/water.html',
+				json: true
+			}).then(data => {
+				this.log('{getWater} opgehaalde data van update, ', data);
+				this._processStatusUpdate(data);
+			}).catch( err => {
+				if( err.error ) {
+				this.error('failed to retrieve status update', err.message);
+				}
+			})
+		} catch (err) {
+			this.error('failed to retrieve status update', err.message);
+		}
+	}
 
+	
 	/**
 	 * Set the state of the device, overrides the program.
 	 * @param state ['away', 'home', 'sleep', 'comfort']
@@ -301,6 +329,12 @@ class ToonDevice extends WebAPIDevice {
 			 	this._processPowerUsageData(dataRootObject);
 			}
 
+			// Check for water information by oepi-loepi
+			if (dataRootObject.hasOwnProperty('water')) {
+				this.log ('Update water usage')
+			 	this._processWaterData(dataRootObject.water);
+			}
+			
 			// Check for thermostat information
 			if (dataRootObject.hasOwnProperty('currentTemp') && dataRootObject.hasOwnProperty('currentSetpoint')) {
 				this.log ('Update thermostatinfo usage')
@@ -357,6 +391,27 @@ class ToonDevice extends WebAPIDevice {
 		}
 
 	}
+
+	/**
+	 * Method that handles the parsing of water data.
+	 * by oepi-loepi
+	 */
+	_processWaterData(data = {}) {
+		this.log('process received water data');
+
+		// Store data object
+		this.water = data;
+		const waterflow = data.flow;
+		const watertoday = data.value / 1000.000;
+		const waterquantity = data.total / 1000.000;
+		this.log('getThermostatData() -> waterFlow :' +  waterflow);
+		this.log('getThermostatData() -> today:' + watertoday);
+		this.log('getThermostatData() -> waterquantity:' + waterquantity);
+		this.setCapabilityValue('meter_water.today', watertoday);
+		this.setCapabilityValue('meter_water.total', waterquantity);
+		this.setCapabilityValue('measure_water', waterflow);
+	}
+
 
 	/**
 	 * Method that handles the parsing of updated gas usage data.

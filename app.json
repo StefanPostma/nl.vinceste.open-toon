@@ -14,6 +14,18 @@
   "author": {
     "name": "Vinceste IT"
   },
+  
+  "contributors": {
+    "developers": [
+      {
+        "name": "oepi-loepi"
+      },
+	  {
+        "name": "Paul Heeringa"
+      }
+    ]
+  },
+  
   "category": "climate",
   "images": {
     "large": "assets/images/large.png",
@@ -86,7 +98,10 @@
         "meter_power.peak",
         "meter_power.offPeak",
         "measure_power",
-        "meter_gas"
+        "meter_gas",
+		"measure_water",
+		"meter_water.today",
+		"meter_water.total"
       ],
       "energy": {
         "cumulative": true
@@ -108,6 +123,18 @@
             "en": "Power meter off-peak (total)",
             "nl": "Stroom meterstand dal"
           }
+        },
+		 "meter_water.today": {
+          "title": {
+            "en": "Water today",
+            "nl": "Water vandaag"
+          }
+        },
+		 "meter_water.total": {
+          "title": {
+            "en": "Water meter total",
+            "nl": "Water meter totaal"
+          }
         }
       },
       "pair": [
@@ -116,25 +143,25 @@
 				}
 			],
       "settings": [
-			  {
-          "type": "group",
-          "label": {
-            "en": "Local Toon Settings",
-						"nl": "Lokale Toon Instellingen"
-          },
-					"children": [
-				    {
-				      "id": "address",
-				      "type": "text",
-				      "value": "0.0.0.0",
-				      "label": {
-				        "en": "IP Address",
-				        "nl": "IP Adres"
-				      }
-				    }
-		      ]
-		    }
-		  ]
+		   {
+				"type": "group",
+				"label": {
+					"en": "Local Toon Settings",
+					"nl": "Lokale Toon Instellingen"
+				},
+				"children": [
+					{
+						"id": "address",
+						"type": "text",
+						"value": "0.0.0.0",
+						"label": {
+							"en": "IP Address",
+							"nl": "IP Adres"
+						}
+					}
+				]
+			}
+		]
     }
   ],
   "flow": {
@@ -177,6 +204,31 @@
             "title": {
               "en": "Wh",
               "nl": "Wh"
+            },
+            "example": 75
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+	  {
+        "id": "measure_water_changed",
+        "title": {
+          "en": "The water flow changed",
+          "nl": "De waterflow is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "measure_water",
+            "type": "number",
+            "title": {
+              "en": "l/min",
+              "nl": "l/min"
             },
             "example": 75
           }
@@ -394,6 +446,20 @@
         "title": {
           "en": "Update power usage",
           "nl": "Update stroom gebruik"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+	  {
+        "id": "update_water",
+        "title": {
+          "en": "Update water",
+          "nl": "Update water"
         },
         "args": [
           {

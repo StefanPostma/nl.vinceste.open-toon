@@ -30,6 +30,9 @@ class ToonDriver extends Homey.Driver  {
 		this.homey.flow.getConditionCard('temperature_state_is')
 			.registerRunListener(args => Promise.resolve(args.device.getCapabilityValue('temperature_state') === args.state));
 
+		this.homey.flow.getConditionCard('hotwater_dispensing')
+			.registerRunListener(args => Promise.resolve(args.device.getCapabilityValue('alarm_water.hotwater')));
+
 		this.homey.flow.getActionCard('set_temperature_state')
 			.registerRunListener(args => args.device.onCapabilityTemperatureState(args.state, (args.resume_program)));
 
@@ -54,6 +57,7 @@ class ToonDriver extends Homey.Driver  {
 
 		this.homey.flow.getActionCard('update_metertotals')
 			.registerRunListener(args => args.device.getStatusUpdateTotals());
+
 
 		this.log('onInit() -> complete, Flow Cards registered');
 	}

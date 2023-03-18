@@ -101,7 +101,8 @@
         "meter_gas",
         "measure_water",
         "meter_water.today",
-        "meter_water.total"
+        "meter_water.total",
+        "alarm_water.hotwater"
       ],
       "energy": {
         "cumulative": true
@@ -134,6 +135,12 @@
           "title": {
             "en": "Water meter total",
             "nl": "Water meter totaal"
+          }
+        },
+        "alarm_water.hotwater": {
+          "title": {
+            "en": "Hot water dispensing",
+            "nl": "Warm water afgifte"
           }
         }
       },
@@ -268,6 +275,31 @@
             "filter": "driver_id=open-toon"
           }
         ]
+      },
+      {
+        "id": "alarm_water_changed",
+        "title": {
+          "en": "The hot water dispensing is changed",
+          "nl": "De warm water afgifte is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "alarm_water.hotwater",
+            "type": "boolean",
+            "title": {
+              "en": "Hotwater dispensing",
+              "nl": "Warmwater afgifte"
+            },
+            "example": true
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
       }
     ],
     "conditions": [
@@ -324,6 +356,20 @@
                 }
               }
             ]
+          }
+        ]
+      },
+      {
+        "id": "hotwater_dispensing",
+        "title": {
+          "en": "Hot water !{{is|isn't}} dispensing",
+          "nl": "Warm water wordt !{{wel|niet}} afgegeven"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=open-toon"
           }
         ]
       }

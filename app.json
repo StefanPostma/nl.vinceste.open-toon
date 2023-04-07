@@ -309,6 +309,10 @@
           "en": "Temperature state !{{is|isn't}}",
           "nl": "Temperatuurstand !{{is|is niet}}"
         },
+        "titleFormatted": {
+          "en": "Current temperature state !{{is|isn't}} [[state]]",
+          "nl": "Huidige temperatuurstand !{{is||is niet}} gelijk aan [[state]]"
+        },
         "args": [
           {
             "name": "device",
@@ -380,6 +384,10 @@
         "title": {
           "en": "Set temperature state",
           "nl": "Stel temperatuurstand in"
+        },
+        "titleFormatted": {
+          "en": "Set temperature state to [[state]]",
+          "nl": "Zet de temperatuurstand op [[state]]"
         },
         "args": [
           {

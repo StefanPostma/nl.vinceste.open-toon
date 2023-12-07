@@ -26,6 +26,17 @@ class ToonDevice extends WebAPIDevice {
 		this.log('name:', this.getName());
 		this.log('class:', this.getClass());
 
+		/*
+		 * Add new capability by moezie
+		*/
+
+		if (this.hasCapability('alarm_water.hotwater') === false) {
+			// You need to check if migration is needed
+			// do not call addCapability on every init!
+			await this.addCapability('alarm_water.hotwater');
+			this.log('Hot water capability not present. Added capability.');
+		}
+
 		// Store raw data
 		this.gasUsage = {};
 		this.water = {};
@@ -460,6 +471,10 @@ class ToonDevice extends WebAPIDevice {
 				// Paul Heeringa: Parsed variable "dataObject.activeState" as int, else it the getKey class would return "undefined".
 				this.setCapabilityValue('temperature_state', ToonDevice.getKey(TEMPERATURE_STATES, parseInt(dataObject.activeState)));
 				this.log('received activeState data', dataObject.activeState, "(", ToonDevice.getKey(TEMPERATURE_STATES, parseInt(dataObject.activeState)),")");
+			}
+			if (dataObject.hasOwnProperty('burnerInfo')) {
+				this.setCapabilityValue('alarm_water.hotwater', parseInt(dataObject.burnerInfo) === 2);
+				this.log('received burner info', dataObject.burnerInfo);
 			}
 		} catch (err) {
 			this.error('failed to parse data input', err.message);

@@ -27,41 +27,37 @@ class ToonDriver extends Homey.Driver  {
 	 */
 	onInit() {
 
-		new Homey.FlowCardCondition('temperature_state_is')
-			.register()
+		this.homey.flow.getConditionCard('temperature_state_is')
 			.registerRunListener(args => Promise.resolve(args.device.getCapabilityValue('temperature_state') === args.state));
 
-		new Homey.FlowCardAction('set_temperature_state')
-			.register()
+		this.homey.flow.getConditionCard('hotwater_dispensing')
+			.registerRunListener(args => Promise.resolve(args.device.getCapabilityValue('alarm_water.hotwater')));
+
+		this.homey.flow.getActionCard('set_temperature_state')
 			.registerRunListener(args => args.device.onCapabilityTemperatureState(args.state, (args.resume_program)));
 
-		new Homey.FlowCardAction('enable_program')
-			.register()
+		this.homey.flow.getActionCard('enable_program')
 			.registerRunListener(args => args.device.enableProgram());
 
-		new Homey.FlowCardAction('disable_program')
-			.register()
+		this.homey.flow.getActionCard('disable_program')
 			.registerRunListener(args => args.device.disableProgram());
 
-		new Homey.FlowCardAction('update_status')
-			.register()
+		this.homey.flow.getActionCard('update_status')
 			.registerRunListener(args => args.device.getStatusUpdate());
 
-		new Homey.FlowCardAction('update_powerusage')
-			.register()
+		this.homey.flow.getActionCard('update_powerusage')
 			.registerRunListener(args => args.device.getStatusUpdatePowerUsage());
 
 		/*
 		* Method water by oepi-loepi
 		*/
-	 
-		new Homey.FlowCardAction('update_water')
-			.register()
+
+		this.homey.flow.getActionCard('update_water')
 			.registerRunListener(args => args.device.getWater());
-			
-		new Homey.FlowCardAction('update_metertotals')
-			.register()
+
+		this.homey.flow.getActionCard('update_metertotals')
 			.registerRunListener(args => args.device.getStatusUpdateTotals());
+
 
 		this.log('onInit() -> complete, Flow Cards registered');
 	}

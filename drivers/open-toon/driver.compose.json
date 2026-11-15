@@ -1,0 +1,76 @@
+{
+  "name": {
+    "en": "Open Toon®",
+    "nl": "Open Toon®"
+  },
+  "images": {
+    "large": "drivers/open-toon/assets/images/large.png",
+    "small": "drivers/open-toon/assets/images/small.png"
+  },
+  "class": "thermostat",
+  "platforms": ["local"],
+  "connectivity": ["lan"],
+  "capabilities": [
+    "target_temperature",
+    "measure_temperature",
+    "temperature_state",
+    "meter_power.peak",
+    "meter_power.offPeak",
+    "measure_power",
+    "meter_gas",
+    "alarm_water.hotwater",
+    "burner_state"
+  ],
+  "energy": {
+    "cumulative": true
+  },
+  "capabilitiesOptions": {
+    "target_temperature": {
+      "step": 0.5,
+      "min": 6,
+      "max": 30
+    },
+    "meter_power.peak": {
+      "title": {
+        "en": "Power meter peak (total)",
+        "nl": "Stroom meterstand piek"
+      }
+    },
+    "meter_power.offPeak": {
+      "title": {
+        "en": "Power meter off-peak (total)",
+        "nl": "Stroom meterstand dal"
+      }
+    },
+    "measure_water": {},
+    "meter_water.today": {
+      "title": {
+        "en": "Water today",
+        "nl": "Water vandaag"
+      }
+    },
+    "meter_water.total": {
+      "title": {
+        "en": "Water meter total",
+        "nl": "Water meter totaal"
+      }
+    },
+    "measure_power.export": {
+      "title": {
+        "en": "Power export",
+        "nl": "Teruglevering"
+      }
+    },
+    "alarm_water.hotwater": {
+      "title": {
+        "en": "Hot water dispensing",
+        "nl": "Warm water afgifte"
+      }
+    }
+  },
+  "pair": [
+    {
+      "id": "start"
+    }
+  ]
+}

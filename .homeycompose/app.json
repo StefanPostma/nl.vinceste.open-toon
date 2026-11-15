@@ -1,0 +1,48 @@
+{
+  "id": "nl.vinceste.open-toon",
+  "version": "2.0.0",
+  "compatibility": ">=12.9.0",
+  "sdk": 3,
+  "platforms": ["local"],
+  "name": {
+    "en": "Open-Toon®",
+    "nl": "Open-Toon®"
+  },
+  "description": {
+    "en": "Control your open (rooted) Toon thermostat and read its energy meters from Homey, over your local network.",
+    "nl": "Bedien je open (geroote) Toon-thermostaat en lees de energiemeters uit in Homey, via je lokale netwerk."
+  },
+  "tags": {
+    "en": ["toon", "thermostat", "heating", "energy", "gas", "water"],
+    "nl": ["toon", "thermostaat", "verwarming", "energie", "gas", "water"]
+  },
+  "author": {
+    "name": "Vinceste IT"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "oepi-loepi"
+      },
+      {
+        "name": "Paul Heeringa"
+      },
+      {
+        "name": "Dennis Moes (moezie)"
+      }
+    ]
+  },
+  "category": "climate",
+  "brandColor": "#E5532D",
+  "permissions": [],
+  "images": {
+    "large": "assets/images/large.png",
+    "small": "assets/images/small.png"
+  },
+  "support": "https://github.com/StefanPostma/nl.vinceste.open-toon/issues",
+  "source": "https://github.com/StefanPostma/nl.vinceste.open-toon",
+  "bugs": {
+    "url": "https://github.com/StefanPostma/nl.vinceste.open-toon/issues"
+  },
+  "homepage": "https://github.com/StefanPostma/nl.vinceste.open-toon"
+}

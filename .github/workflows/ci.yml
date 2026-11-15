@@ -1,0 +1,52 @@
+# The app and its tests run on Node 22, the runtime of every Homey from firmware 12.9.0. The Homey CLI, which
+# composes and validates the manifest, needs Node 24 or newer, so validation runs in its own job (ADR-0012).
+name: CI
+
+on:
+  push:
+    branches: [Develop, Stable]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Lint and test (Node 22)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run lint
+      - run: npm test
+      - run: npm run test:coverage
+      - run: npm run check:requirements
+
+  validate:
+    name: Validate and pack (Node 24)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run validate
+      - run: git diff --exit-code app.json locales/
+      - run: npm run pack:check
+      - run: npm run validate:verified
+        continue-on-error: true

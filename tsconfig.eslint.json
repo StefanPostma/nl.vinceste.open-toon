@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "types": ["node", "homey"]
+  },
+  "include": [
+    "app.js",
+    "drivers/**/*.js",
+    "lib/**/*.js",
+    "test/**/*.js",
+    "test/**/*.cjs",
+    "scripts/**/*.js"
+  ]
+}

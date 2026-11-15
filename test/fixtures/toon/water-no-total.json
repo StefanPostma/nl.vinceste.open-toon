@@ -1,0 +1,11 @@
+{
+  "source": "derived from 03 section 5.4 (add-on 1.1.15 shape without total), not captured; HW-02",
+  "payload": {
+    "result": "ok",
+    "water": {
+      "flow": 0,
+      "value": 1668,
+      "avgValue": 200
+    }
+  }
+}

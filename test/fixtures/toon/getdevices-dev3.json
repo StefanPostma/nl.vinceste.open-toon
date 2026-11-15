@@ -1,0 +1,39 @@
+{
+  "source": "derived from 03 section 4.4 layout \"dev_3\" (type strings are descriptive), not captured; HW-02",
+  "payload": {
+    "dev_3": {
+      "type": "HAE_METER_v2",
+      "IsConnected": "1"
+    },
+    "dev_3.1": {
+      "type": "gas",
+      "CurrentGasFlow": "0",
+      "CurrentGasQuantity": "3012450"
+    },
+    "dev_3.2": {
+      "type": "elec",
+      "CurrentElectricityFlow": "412",
+      "CurrentElectricityQuantity": "NaN"
+    },
+    "dev_3.3": {
+      "type": "elec_delivered_nt",
+      "CurrentElectricityFlow": "412",
+      "CurrentElectricityQuantity": "2210334"
+    },
+    "dev_3.4": {
+      "type": "elec_received_nt",
+      "CurrentElectricityFlow": "0",
+      "CurrentElectricityQuantity": "90021"
+    },
+    "dev_3.5": {
+      "type": "elec_delivered_lt",
+      "CurrentElectricityFlow": "0",
+      "CurrentElectricityQuantity": "3340877"
+    },
+    "dev_3.6": {
+      "type": "elec_received_lt",
+      "CurrentElectricityFlow": "0",
+      "CurrentElectricityQuantity": "45110"
+    }
+  }
+}

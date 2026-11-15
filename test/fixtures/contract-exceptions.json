@@ -1,0 +1,7 @@
+{
+  "driverCapabilitiesRemovedFromManifest": {
+    "measure_water": "ADR-0017",
+    "meter_water.today": "ADR-0017",
+    "meter_water.total": "ADR-0017"
+  }
+}

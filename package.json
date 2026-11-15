@@ -1,25 +1,36 @@
 {
-  "name": "nl.eneco.toon",
-  "version": "1.0.0",
+  "name": "nl.vinceste.open-toon",
+  "version": "2.0.0",
   "description": "Let Homey control your Toon®!",
   "main": "app.js",
-  "dependencies": {
-    "homey-log": "^1.0.6",
-    "homey-wifidriver": "^1.0.8"
+  "engines": {
+    "node": ">=22"
   },
-  "devDependencies": {},
+  "dependencies": {},
+  "devDependencies": {
+    "@types/homey": "npm:homey-apps-sdk-v3-types@^1.8.3",
+    "@types/node": "~22",
+    "eslint": "~8.57.1",
+    "eslint-config-athom": "~4.0.2",
+    "homey": "~4.6.3"
+  },
   "scripts": {
-    "run": "homeyConfig compose && athom project --run",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint --ext .js,.cjs --max-warnings 0 --ignore-path .gitignore .",
+    "test": "node --require ./test/helpers/register.cjs --test \"test/**/*.test.js\"",
+    "test:coverage": "node --require ./test/helpers/register.cjs --test --experimental-test-coverage --test-coverage-include=\"lib/**\" --test-coverage-lines=90 \"test/**/*.test.js\"",
+    "validate": "node scripts/validate.js",
+    "validate:verified": "node scripts/validate.js --level verified",
+    "pack:check": "node scripts/check-pack.js",
+    "check:requirements": "node scripts/check-requirements.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/athombv/nl.eneco.toon.git"
+    "url": "git+https://github.com/StefanPostma/nl.vinceste.open-toon.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Vinceste IT",
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/athombv/nl.eneco.toon/issues"
+    "url": "https://github.com/StefanPostma/nl.vinceste.open-toon/issues"
   },
-  "homepage": "https://github.com/athombv/nl.eneco.toon#readme"
+  "homepage": "https://github.com/StefanPostma/nl.vinceste.open-toon#readme"
 }

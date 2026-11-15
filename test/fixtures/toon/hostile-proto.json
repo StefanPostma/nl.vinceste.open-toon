@@ -1,0 +1,8 @@
+{
+  "source": "derived from ADR-0003 / 05 section 13 (R-12), not captured; HW-02",
+  "payload": {
+    "__proto__": {
+      "polluted": 1
+    }
+  }
+}

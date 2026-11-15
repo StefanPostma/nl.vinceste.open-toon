@@ -1,0 +1,39 @@
+{
+  "source": "derived from 03 section 4.4 / 00 section 2 (a meter node that is absent), not captured; HW-02",
+  "payload": {
+    "dev_2": {
+      "type": "HAE_METER_v2",
+      "IsConnected": "1"
+    },
+    "dev_2.1": {
+      "type": "gas",
+      "CurrentGasFlow": "0",
+      "CurrentGasQuantity": "5242110"
+    },
+    "dev_2.2": {
+      "type": "elec",
+      "CurrentElectricityFlow": "324",
+      "CurrentElectricityQuantity": "NaN"
+    },
+    "dev_2.3": {
+      "type": "elec_delivered_nt",
+      "CurrentElectricityFlow": "324",
+      "CurrentElectricityQuantity": "NaN"
+    },
+    "dev_2.5": {
+      "type": "elec_received_nt",
+      "CurrentElectricityFlow": "0",
+      "CurrentElectricityQuantity": "1204033"
+    },
+    "dev_2.6": {
+      "type": "elec_delivered_lt",
+      "CurrentElectricityFlow": "0",
+      "CurrentElectricityQuantity": "4120771"
+    },
+    "dev_2.7": {
+      "type": "elec_received_lt",
+      "CurrentElectricityFlow": "0",
+      "CurrentElectricityQuantity": "811907"
+    }
+  }
+}

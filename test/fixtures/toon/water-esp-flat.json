@@ -1,0 +1,16 @@
+{
+  "source": "derived from 03 section 5.5 (flat answer of the ESP sensor module, invented values), not captured; HW-02",
+  "payload": {
+    "version": "1.4.36",
+    "RSSI": "-71",
+    "waterflow": "0.0",
+    "today": "137",
+    "waterquantity": "7350214",
+    "currentBatch": "0",
+    "update": "0",
+    "pulselength": "8",
+    "pulsetime": "0",
+    "breakdetect": "0",
+    "leakdetect": "0"
+  }
+}

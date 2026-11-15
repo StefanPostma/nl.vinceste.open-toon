@@ -1,74 +1,74 @@
 'use strict';
 
 const Homey = require('homey');
-const ToonDevice = require('./device.js');
+const {
+  PairingProblem, pairingMessage, readAddress, testConnection, buildNewDevice,
+} = require('../../lib/engine/pairing');
+const { createFlow } = require('../../lib/flow/cards');
+const { ToonClient, homeyTimers } = require('../../lib/toon/client');
+const { ToonError } = require('../../lib/toon/errors');
 
-class ToonDriver extends Homey.Driver  {
+class ToonDriver extends Homey.Driver {
+  constructor(...args) {
+    super(...args);
+    this._timers = homeyTimers(this);
+  }
 
-	onPair(socket) {
-    socket.on('testConnection', function(data, callback) {
-			try {
-				const data = "test toon";
-				//await ToonDevice.apiCallGet({ uri: 'http://' + data.address + '/happ_thermstat?action=getThermostatInfo' });
+  /** Gets the Flow cards from Homey once: puts the listeners on the cards and keeps the triggers for the devices (HS-41). */
+  async onInit() {
+    this._flow = createFlow(this.homey);
+    this._flow.register();
+    this.log('Open-Toon driver started');
+  }
 
-				let result = {
-					updateDataSet: data
-				}
+  /**
+   * A device reports the capability changes of one poll answer; the triggers that they call for are fired. Never throws.
+   * @param {object} device
+   * @param {{id: string, prev: *, next: *}[]} changes
+   */
+  fireTriggers(device, changes) {
+    this._flow.fire(device, changes);
+  }
 
-				callback(null, result);
-			} catch (error) {
-				callback(error, null);
-			}
-		});
-	}
+  /**
+   * The pair view (ADR-0008) asks for two things: to test the connection to an address, and to turn what the user
+   * entered into the device that it then creates itself.
+   * @param {object} session the PairSession
+   */
+  async onPair(session) {
+    session.setHandler('testConnection', (request) => this._pairing(() => this._testConnection(request)));
+    session.setHandler('buildDevice', (request) => this._pairing(() => this._buildDevice(request)));
+  }
 
-	/**
-	 * This method will be called when the driver initializes, it initializes Flow Cards.
-	 */
-	onInit() {
+  /**
+   * The one place where the app gets hold of the network: the global fetch of the runtime goes into the client from here.
+   * @param {string} host a normalized address
+   * @param {{setTimeout: Function, clearTimeout: Function}} timers the Homey timers of the device that asks
+   */
+  createClient(host, timers) {
+    return new ToonClient({ host, fetch: (url, init) => globalThis.fetch(url, init), timers });
+  }
 
-		this.homey.flow.getConditionCard('temperature_state_is')
-			.registerRunListener(args => Promise.resolve(args.device.getCapabilityValue('temperature_state') === args.state));
+  _testConnection(request) {
+    return testConnection(this.createClient(readAddress(request), this._timers), { timers: this._timers });
+  }
 
-		this.homey.flow.getConditionCard('hotwater_dispensing')
-			.registerRunListener(args => Promise.resolve(args.device.getCapabilityValue('alarm_water.hotwater')));
+  _buildDevice(request) {
+    return buildNewDevice(request, {
+      options: this.manifest.capabilitiesOptions,
+      taken: this.getDevices().map((device) => device.getData().id),
+    });
+  }
 
-		this.homey.flow.getActionCard('set_temperature_state')
-			.registerRunListener(args => args.device.onCapabilityTemperatureState(args.state, (args.resume_program)));
-
-		this.homey.flow.getActionCard('enable_program')
-			.registerRunListener(args => args.device.enableProgram());
-
-		this.homey.flow.getActionCard('disable_program')
-			.registerRunListener(args => args.device.disableProgram());
-
-		this.homey.flow.getActionCard('update_status')
-			.registerRunListener(args => args.device.getStatusUpdate());
-
-		this.homey.flow.getActionCard('update_powerusage')
-			.registerRunListener(args => args.device.getStatusUpdatePowerUsage());
-
-		/*
-		* Method water by oepi-loepi
-		*/
-
-		this.homey.flow.getActionCard('update_water')
-			.registerRunListener(args => args.device.getWater());
-
-		this.homey.flow.getActionCard('update_metertotals')
-			.registerRunListener(args => args.device.getStatusUpdateTotals());
-
-
-		this.log('onInit() -> complete, Flow Cards registered');
-	}
-
-	/**
-	 * Always use ToonDevice as device for this driver.
-	 * @returns {ToonDevice}
-	 */
-	mapDeviceClass() {
-		return ToonDevice;
-	}
+  /** Whatever goes wrong while pairing reaches the view as a sentence in the language of the user, never as an error of ours. */
+  async _pairing(task) {
+    try {
+      return await task();
+    } catch (error) {
+      if (!(error instanceof PairingProblem) && !(error instanceof ToonError)) this.error('pairing failed unexpectedly:', error);
+      throw new Error(pairingMessage(this.homey, error));
+    }
+  }
 }
 
 module.exports = ToonDriver;

@@ -8,6 +8,10 @@ const { fetchAdapter, startHttpServer, createRecorder } = require('../helpers/mo
 
 const DELAY = 150;
 const CHUNK_DELAY = 50;
+/** A real timer and Date.now() are different clocks: the timer can fire a few ms before Date.now() says the delay has passed. */
+const CLOCK_SKEW_MS = 20;
+/** Whether a handler ran its whole delay (an abort at 20 ms is far below the margin) rather than ending when the client left. */
+const ranItsDelay = (entry) => entry.end - entry.start >= DELAY - CLOCK_SKEW_MS;
 
 /** One handler, served by both transports. */
 function handler(req) {
@@ -73,7 +77,7 @@ describe('NFR-06 AC1: fetchAdapter is equivalent to node:http + real fetch (ADR-
       const openRightAfterAbort = env.recorder.openHandlers();
       await env.wait(DELAY + 100);
       return {
-        name, abortedByClient: entry.abortedByClient, openRightAfterAbort, openAtEnd: env.recorder.openHandlers(), ranFullDelay: entry.end - entry.start >= DELAY,
+        name, abortedByClient: entry.abortedByClient, openRightAfterAbort, openAtEnd: env.recorder.openHandlers(), ranFullDelay: ranItsDelay(entry),
       };
     });
 
@@ -122,7 +126,7 @@ describe('NFR-06 AC1: fetchAdapter is equivalent to node:http + real fetch (ADR-
         body,
         maxConcurrent: env.recorder.maxConcurrent(),
         openAtEnd: env.recorder.openHandlers(),
-        firstEndedAfterItsDelay: first.end - first.start >= DELAY,
+        firstEndedAfterItsDelay: ranItsDelay(first),
         firstAborted: first.abortedByClient,
         secondAborted: again.abortedByClient,
       };

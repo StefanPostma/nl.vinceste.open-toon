@@ -1,0 +1,4 @@
+node_modules
+.homeybuild
+env.json
+.claude/

@@ -924,6 +924,7 @@ The probe commands use `<ip>`; add `--out ~/open-toon-test/probe/` to each. Anne
 * **Experiment:** the probe sends the same headers: if it works, the headers are accepted. Also: `curl -sv "http://<ip>/happ_thermstat?action=getThermostatInfo" -H "Accept-Encoding: gzip" -o /dev/null` and note the response headers.
 * **Collect:** the `Server`, `Content-Encoding` and `Connection` response headers, answer times with and without the headers.
 * **Decision:** if the Toon misbehaves with `Connection: close` (resets, slow), remove it; if it always sends compression despite `identity`, the client must decode it.
+* **Known platform behaviour (not a hardware question):** after an answer over the 2 MiB cap the app cancels the stream, but Node 22's `fetch` may keep the socket open for a while when the server still has data to send (ADR-0003, 2026-11-15). A real Toon is not expected to send that much; if the probe ever reports `too_large`, note it and how long the Toon shows an open connection.
 
 ### Q-14 Content type and body shape of every answer  (T3)
 * **Assumes:** answers are JSON text with `Content-Type: text/javascript`; the body is always parsed with `JSON.parse` of the text (`lib/toon/client.js`).

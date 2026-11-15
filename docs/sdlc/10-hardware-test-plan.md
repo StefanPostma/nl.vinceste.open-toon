@@ -845,11 +845,14 @@ The probe commands use `<ip>`; add `--out ~/open-toon-test/probe/` to each. Anne
   | R6 | the tile target temperature +1 degree | what `programState` and `activeState` become; when does it revert |
   | R7 | Flow "Enable program"; put the Toon back as in A.5 | |
 * **Collect:** per row: the probe file label, `programState`, `activeState`, `currentSetpoint`, the Toon's words, the time.
+* **What the Toon community's own clients do (2026-11-15, `12-tsc-interface-findings.md` section B):** both pick `state` from the current `programState`: 0 when the program is off, otherwise 2 with the preset. Nobody sends `state=0&temperatureState=<id>` while the program is on, so our "Disable program" placeholder is untested in that situation. Expectation for R5: a `state=2` request while the program is off probably reports `programState` 2 (the program is back on).
+* **Optional raw requests (the app never sends these; you run them with `curl` and put the Toon back afterwards):** (a) from program-on, `state=0&temperatureState=<id>` as one request, against two requests, `state=0` and then `state=0&temperatureState=<id>`: which one leaves the program off with the preset applied; (b) `state=8&temperatureState=<id>`, which the community's web app calls "locked" (program stays on), and what the Toon's screen calls it.
 * **Decision:** if R2 leaves the program off and applies the preset: the placeholder is right, remove the "unverified" marks (README, ADR-0015). If it does not: find the sequence that does (for example a `state=0` followed by a `state=2` request), put it in `RESUME.no` and fix the mock's state machine and the tests that pin the old sequence. If no sequence does it: make "Disable program" identical to "Resume program afterwards" and change the label (the fallback of ADR-0015). If R5 shows that "resume" switches the program back on, say so in the README.
 
 ### Q-03 How does vacation show up?  (OQ-07, FR-12; 01-HW-04)
 * **Assumes:** `activeState` 4 is vacation (`lib/toon/parse.js:14`, from document 03 I2 and the audit); the mock starts it with `state=8&temperatureState=4` and shows `programState` 4 (`test/helpers/mock-toon.js:338`); the app never sets vacation; the tile picker lists it but refuses it.
 * **Why hardware:** the code table comes from third-party notes, not from a Toon.
+* **Disputed (12 section B):** the mock's `state=8&temperatureState=4` entry follows a Home Assistant integration, while the Toon community's web app names programState 8 "locked base" and holiday 4/5, and holiday is entered through a different, internal request (SetHoliday). Treat the request as unverified; capture holiday mode started on the Toon's own screen first, and try the raw request only afterwards, and only if you are willing to put the Toon back by hand.
 * **Experiment:** put the Toon into holiday mode on its own screen for ten minutes; probe; look at the tile ("Vacation" / "Vakantie"); run "Current temperature state is Vacation"; select Vacation on the tile; end holiday mode on the Toon and probe again. Restore the Toon.
 * **Collect:** `activeState`, `programState`, `currentSetpoint`, `nextState` before, during and after; the tile; the toast words.
 * **Decision:** code 4 confirmed: keep. Another code: change the table (`TEMPERATURE_STATES`), the mock and the fixtures. A code that the app does not know appears at any time (also -1 or 5): add it as an enum value (additive) or map it to "No state"; the app already keeps the old value and logs a note for an unknown code.
@@ -857,6 +860,7 @@ The probe commands use `<ip>`; add `--out ~/open-toon-test/probe/` to each. Anne
 ### Q-04 What do the `burnerInfo` values mean?  (FR-30, FR-32, issue #26; 01-HW-08)
 * **Assumes:** 0 off, 1 heating, 2 hot water, 3 pre-heating (`BURNER_STATES`, `lib/toon/parse.js:18`). Only 2 is confirmed by the old code; 1 by the reporter of issue #26; 0 and 3 by the audit (model-generated).
 * **Why hardware:** the boiler decides.
+* **Known (12 section A):** 0, 1 and 2 have three independent sources in the Toon community's code; 3 has one, which counts it as hot water. So 3 is the value to provoke and write down.
 * **Experiment:** E.8 for single moments, and L.4 for a whole day: `node scripts/toon-probe.js <ip> --samples 1440 --every 60 --no-water --label "burner day"` with a paper log of what you did. Try to provoke pre-heating by setting a program step with a higher setpoint 30 minutes ahead.
 * **Collect:** `watch.fieldChanges["thermostat.burnerInfo"]` (`seen` counts and `changes` with times), `watch.ranges["thermostat.currentModulationLevel"]`, your paper log.
 * **Decision:** values match: keep, and promote FR-30/FR-32 to confirmed. A value is different: edit `BURNER_STATES` (and `HOT_WATER` follows), the English and Dutch titles of `burner_state` (`.homeycompose/capabilities/burner_state.json`) and the fixtures. A value that never shows up (3): keep it, say "unconfirmed" in the README. A value above 3 that does show up: add an enum value (additive; the app keeps the old state and logs a note for unknown ones).
@@ -892,7 +896,7 @@ The probe commands use `<ip>`; add `--out ~/open-toon-test/probe/` to each. Anne
 ### Q-08 The preset codes and odd setpoints  (FR-10, FR-12; ADR-0014)
 * **Assumes:** `activeState` 0 Comfort, 1 Home, 2 Sleep, 3 Away, -1 none (`lib/toon/parse.js:14`); the setpoint is in hundredths of a degree and is rounded to 0.5 on the tile (a Toon set to 19.75 by another client shows 20.0).
 * **Experiment:** E.3, D.6 and Q-02: choose each preset on the Toon's screen and probe; set 19.75 on the Toon if its screen allows.
-* **Collect:** preset name on the Toon against `activeState`; the setpoint text and the tile value.
+* **Collect:** preset name on the Toon against `activeState`; the setpoint text and the tile value. Also: after a manual setpoint change, does `activeState` read -1 or 6 (one Toon bridge calls 6 "manual", the simulator says -1; 12 section A), and which `programState` values appear (the nine codes of 12 section A; the app only reports 0, 1, 2, 3 and 8).
 * **Decision:** a different order: change `TEMPERATURE_STATES` (and then the mock, the fixtures and every Flow that stored the old meaning, which is why this must be settled before release). Setpoints finer than 0.5 are a tile display question only.
 
 ### Q-09 What does a new setpoint do on the Toon?  (FR-11 AC4; 01-HW-03)
@@ -922,7 +926,7 @@ The probe commands use `<ip>`; add `--out ~/open-toon-test/probe/` to each. Anne
 ### Q-13 How does the Toon treat our request headers?  (ADR-0003 H4)
 * **Assumes:** `Accept-Encoding: identity` and `Connection: close` on every request (`lib/toon/client.js:17`); the Toon answers uncompressed and closes after each answer.
 * **Experiment:** the probe sends the same headers: if it works, the headers are accepted. Also: `curl -sv "http://<ip>/happ_thermstat?action=getThermostatInfo" -H "Accept-Encoding: gzip" -o /dev/null` and note the response headers.
-* **Collect:** the `Server`, `Content-Encoding` and `Connection` response headers, answer times with and without the headers.
+* **Collect:** the `Server`, `Content-Encoding` and `Connection` response headers (the probe writes them for every answer: `endpoints[*].server`, `.contentEncoding`, `.connection`), answer times with and without the headers. The community's own firmware config enables gzip for `text/html`, which is why the app asks for `identity`.
 * **Decision:** if the Toon misbehaves with `Connection: close` (resets, slow), remove it; if it always sends compression despite `identity`, the client must decode it.
 * **Known platform behaviour (not a hardware question):** after an answer over the 2 MiB cap the app cancels the stream, but Node 22's `fetch` may keep the socket open for a while when the server still has data to send (ADR-0003, 2026-11-15). A real Toon is not expected to send that much; if the probe ever reports `too_large`, note it and how long the Toon shows an open connection.
 
@@ -1090,7 +1094,7 @@ Before sharing, open the file in a text editor and check: (1) search for your ow
 | `endpoints[power].body` | `powerUsage`, `powerProduction`, `gasUsage` (Q-10, Q-11) |
 | `metersAnalysis` | node keys, `type` strings, quantity kinds, which legacy keys exist (Q-01, Q-28) |
 | `endpoints[water]` | status code, `contentType`, the real payload (Q-05, Q-14) |
-| `endpoints[*].ms`, `contentType`, `bodyKind` | answer time and shape (Q-06, Q-13, Q-14) |
+| `endpoints[*].ms`, `contentType`, `contentEncoding`, `connection`, `server`, `bodyKind` | answer time, headers and shape (Q-06, Q-13, Q-14) |
 | `watch.latency` | answer-time summary and outcomes (Q-06, H.4) |
 | `watch.fieldChanges` | the changes of the enumerations with times (Q-04, Q-07, Q-03) |
 | `watch.ranges` | was production or water flow ever above zero |

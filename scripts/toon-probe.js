@@ -379,6 +379,12 @@ function classifyBody(entry, text, redactor) {
  * ok, timeout, network, http, redirect, too_large, bad_body, toon_error, aborted).
  * @returns {Promise<object>} the entry of the file; its `body` is already masked, the raw answer is not kept anywhere
  */
+/** A response header as short plain text for the file (the test plan asks how the Toon treats our headers, Q-13), or null. */
+function headerText(response, name) {
+  const value = response.headers.get(name);
+  return value === null ? null : value.replace(/[^\x20-\x7e]/g, '?').slice(0, 80);
+}
+
 async function ask(endpoint, context) {
   const {
     base, fetch: fetchIt, timeoutMs, signal, redactor,
@@ -391,6 +397,9 @@ async function ask(endpoint, context) {
     status: null,
     ms: null,
     contentType: null,
+    contentEncoding: null,
+    connection: null,
+    server: null,
     bytes: null,
     bodyKind: null,
   };
@@ -406,6 +415,9 @@ async function ask(endpoint, context) {
     });
     entry.status = response.status;
     entry.contentType = response.headers.get('content-type');
+    entry.contentEncoding = headerText(response, 'content-encoding');
+    entry.connection = headerText(response, 'connection');
+    entry.server = headerText(response, 'server');
     if (response.status >= 300 && response.status < 400) {
       await response.body?.cancel().catch(() => {});
       entry.outcome = 'redirect';

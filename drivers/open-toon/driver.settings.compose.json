@@ -116,8 +116,8 @@
           "nl": "Teruglevering tonen"
         },
         "hint": {
-          "en": "Adds the power you feed back into the grid, in watts, as a separate item on this device. Only useful if you have solar panels or another source that feeds back. Turning it off removes the item again; Flows that use it will break and its Insights history may be lost.",
-          "nl": "Voegt het vermogen dat je teruglevert aan het net, in watt, toe als apart onderdeel van dit apparaat. Alleen nuttig als je zonnepanelen of een andere bron hebt die teruglevert. Uitzetten verwijdert het onderdeel weer; Flows die het gebruiken gaan kapot en de Insights-geschiedenis kan verloren gaan."
+          "en": "Adds the production figure that your Toon reports, in watts, as a separate item on this device. Only useful if you have solar panels or another source that produces power. Whether it equals what you feed back into the grid depends on your meter setup and is not confirmed yet. Turning it off removes the item again; Flows that use it will break and its Insights history may be lost.",
+          "nl": "Voegt het opwekcijfer toe dat je Toon meldt, in watt, als apart onderdeel van dit apparaat. Alleen nuttig als je zonnepanelen of een andere bron hebt die stroom opwekt. Of het gelijk is aan wat je aan het net teruglevert hangt af van je meteropstelling en is nog niet bevestigd. Uitzetten verwijdert het onderdeel weer; Flows die het gebruiken gaan kapot en de Insights-geschiedenis kan verloren gaan."
         }
       }
     ]

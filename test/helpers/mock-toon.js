@@ -335,6 +335,8 @@ function createMockToon(options = {}) {
       case 'changeSchemeState': {
         const state = query.get('state');
         const preset = query.get('temperatureState');
+        // UNVERIFIED, and disputed: a Home Assistant integration enters vacation like this (docs/sdlc/03 I4), while the Toon
+        // community web app calls programState 8 "locked base" (docs/sdlc/12 section B). The app never sends it; Q-03 settles it.
         if (state === '8' && preset === '4') {
           Object.assign(thermostat, { activeState: '4', programState: '4' });
         } else if (state === '2' && Object.hasOwn(PRESET_SETPOINTS, preset)) {

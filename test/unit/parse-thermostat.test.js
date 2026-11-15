@@ -241,8 +241,15 @@ describe('FR-02 AC1: the program of the Toon, as the pairing screen shows it', (
     assert.equal(parseProgram(base()), 'on');
   });
 
+  test('3 (program override) and 8 (locked base) are on as well: the Toon community web app counts them as program [12 section A]', () => {
+    assert.equal(parseProgram({ programState: '3' }), 'on');
+    assert.equal(parseProgram({ programState: 8 }), 'on');
+    assert.equal(parseProgram(withFields({ programState: '8' })), 'on');
+  });
+
   test('a value that is not known, a missing field and a payload that is not an object give no answer, never an exception', () => {
-    [{ programState: '4' }, { programState: '-1' }, { programState: 'on' }, { programState: null }, { programState: '' }, {}, null, 'text', [], 7].forEach((payload) => {
+    const unknownCodes = ['4', '5', '6', '7', '9', '-1', 'on', null, ''].map((programState) => ({ programState }));
+    [...unknownCodes, {}, null, 'text', [], 7].forEach((payload) => {
       assert.equal(parseProgram(payload), undefined, JSON.stringify(payload));
     });
     assert.equal(parseProgram(Object.create({ programState: '1' })), undefined, 'only an own property counts');

@@ -30,7 +30,7 @@ Open-Toon® connects a Toon thermostat that runs the open (rooted) software to H
 * The temperature state (Comfort, Home, Sleep, Away; Vacation is shown but can only be set on the Toon itself) and the weekly program, which you can switch on and off from Flows.
 * Electricity use now, the electricity meter totals (peak and off-peak), the gas meter total and the hot water flag of the boiler, all ready for Insights.
 * The state of the boiler burner (off, heating, hot water, pre-heating) as a device item and as Flow cards.
-* Optional per device: ToonWater (water use) and power export (what you feed back into the grid).
+* Optional per device: ToonWater (water use) and power export (the production figure your Toon reports, for example from solar panels).
 
 The app reads the Toon by itself, so you do not need a Flow to refresh the values. Homey Energy keeps seeing the Toon as a whole-home meter, as before; this version does not change that. Showing the electricity total in the Energy tab is not part of this release, because it would change the Energy accounting of every upgraded device at once and has to be checked on a real Homey first.
 
@@ -98,7 +98,7 @@ The line **ToonWater status** in the settings says what the app saw last:
 
 What happens to my Flows and Insights when I switch ToonWater off? Turning ToonWater off removes the water items again: Flows that use them will break and their Insights history may be lost. After turning it back on, the items return under the same names, so a Flow that used them may work again; whether Homey repairs such a Flow by itself, and whether the Insights history comes back, has not been confirmed on a real Homey yet. Check your Flows after every change. The app never changes your Flows and never switches ToonWater off by itself: a Toon that is rebooting or an add-on that is not installed yet only gives a status, never a removal.
 
-Power export works the same way: **Show power export** in the group "Power export (optional)" adds the power you feed back into the grid, in watts, and switching it off removes it again with the same consequences for Flows and Insights. It is read from the answer that the app already asks for, so it costs no extra request, but it has not been seen on the Toon of a household that feeds back yet.
+Power export works the same way: **Show power export** in the group "Power export (optional)" adds the production figure your Toon reports, in watts (whether it equals what you feed back into the grid is not confirmed yet), and switching it off removes it again with the same consequences for Flows and Insights. It is read from the answer that the app already asks for, so it costs no extra request, but it has not been seen on the Toon of a household that feeds back yet.
 
 ### Flow cards
 
@@ -205,7 +205,7 @@ Open-Toon® koppelt een Toon-thermostaat met de open (geroote) software aan Home
 * De temperatuurstand (Comfort, Thuis, Slapen, Weg; Vakantie wordt getoond maar kan alleen op de Toon zelf worden ingesteld) en het weekprogramma, dat je met Flows aan en uit kunt zetten.
 * Het stroomverbruik nu, de meterstanden van elektriciteit (piek en dal), de gasmeterstand en de warmwatervlag van de ketel, allemaal klaar voor Insights.
 * De toestand van de brander van de ketel (uit, verwarmen, warm water, voorverwarmen) als onderdeel van het apparaat en als Flow-kaarten.
-* Optioneel per apparaat: ToonWater (waterverbruik) en teruglevering (wat je aan het net teruglevert).
+* Optioneel per apparaat: ToonWater (waterverbruik) en teruglevering (het opwekcijfer dat je Toon meldt, bijvoorbeeld van zonnepanelen).
 
 De app leest de Toon zelf uit, dus je hebt geen Flow nodig om de waarden te verversen. Homey Energy blijft de Toon zien als meter voor het hele huis, zoals voorheen; deze versie verandert dat niet. De elektriciteitsstand in het tabblad Energy tonen hoort niet bij deze uitgave, want dat verandert de Energy-berekening van alle geüpgradede apparaten in één keer en moet eerst op een echte Homey worden gecontroleerd.
 
@@ -273,7 +273,7 @@ De regel **ToonWater-status** in de instellingen zegt wat de app het laatst zag:
 
 Wat gebeurt er met mijn Flows en Insights als ik ToonWater uitzet? ToonWater uitzetten verwijdert de wateronderdelen weer: Flows die ze gebruiken gaan kapot en hun Insights-geschiedenis kan verloren gaan. Na het opnieuw aanzetten komen de onderdelen terug onder dezelfde namen, dus een Flow die ze gebruikte kan weer werken; of Homey zo'n Flow zelf herstelt, en of de Insights-geschiedenis terugkomt, is nog niet op een echte Homey bevestigd. Controleer je Flows na elke wijziging. De app past je Flows nooit aan en zet ToonWater nooit zelf uit: een Toon die opnieuw opstart of een add-on die nog niet is geïnstalleerd geeft alleen een status, nooit een verwijdering.
 
-Teruglevering werkt op dezelfde manier: **Teruglevering tonen** in de groep "Teruglevering (optioneel)" voegt het vermogen toe dat je aan het net teruglevert, in watt, en uitzetten verwijdert het weer met dezelfde gevolgen voor Flows en Insights. Het wordt gelezen uit het antwoord dat de app al opvraagt, dus het kost geen extra verzoek, maar het is nog niet gezien op de Toon van een huishouden dat teruglevert.
+Teruglevering werkt op dezelfde manier: **Teruglevering tonen** in de groep "Teruglevering (optioneel)" voegt het opwekcijfer toe dat je Toon meldt, in watt (of het gelijk is aan wat je aan het net teruglevert is nog niet bevestigd), en uitzetten verwijdert het weer met dezelfde gevolgen voor Flows en Insights. Het wordt gelezen uit het antwoord dat de app al opvraagt, dus het kost geen extra verzoek, maar het is nog niet gezien op de Toon van een huishouden dat teruglevert.
 
 ### Flow-kaarten
 

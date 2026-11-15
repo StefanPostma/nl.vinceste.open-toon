@@ -25,6 +25,15 @@ describe('FR-22 AC1: the legacy dev_2.x keys are found first', () => {
     assert.deepEqual(discoverMeters(payload).notes, [], 'no ambiguity: the legacy key decides');
   });
 
+  test('dev_settings_device is the settings of the adapter, never a meter, whatever type it carries [12 section D]', () => {
+    const payload = toonPayload('getdevices-dev3');
+    const clean = keys(discoverMeters(payload));
+    payload.dev_settings_device = { type: 'elec_delivered_nt', CurrentElectricityQuantity: '999' };
+
+    assert.deepEqual(keys(discoverMeters(payload)), clean);
+    assert.deepEqual(discoverMeters(payload).notes, discoverMeters(toonPayload('getdevices-dev3')).notes);
+  });
+
   test('a legacy node that exists but has no reading is still the node of its role', () => {
     const payload = toonPayload('getdevices-dev3');
     payload['dev_2.4'] = { type: 'elec_delivered_nt' };

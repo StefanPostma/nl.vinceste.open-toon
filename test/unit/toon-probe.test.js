@@ -187,6 +187,26 @@ describe('toon-probe: it asks what the app asks, and nothing else', () => {
     assert.equal(thermostat.body.burnerInfo, '0');
     assert.deepEqual(plain(entryOf(dump, 'water').body), toonPayload('water-ok'));
   });
+
+  test('how the Toon treats our headers (Q-13): Content-Encoding, Connection and Server are written down as short plain text, or null', async () => {
+    const answers = [
+      {
+        'content-type': 'text/javascript', 'content-encoding': 'gzip', connection: 'keep-alive', server: 'lighttpd/1.4.55',
+      },
+      { 'content-type': 'text/javascript', server: `a${'b'.repeat(200)}` },
+      { 'content-type': 'text/javascript', connection: 'x\u0007y' },
+    ];
+    const fetchIt = async () => new Response(JSON.stringify(toonPayload('thermostat')), { status: 200, headers: answers.shift() });
+    const seen = capture({ fetch: fetchIt });
+
+    const { dump } = await probe.run(['192.168.1.50', '--no-water'], seen.io);
+    const [first, second, third] = dump.endpoints;
+
+    assert.deepEqual([first.contentEncoding, first.connection, first.server], ['gzip', 'keep-alive', 'lighttpd/1.4.55']);
+    assert.equal(second.server.length, 80, 'a long value is cut');
+    assert.deepEqual([second.contentEncoding, second.connection], [null, null], 'a header the Toon did not send is null');
+    assert.deepEqual([third.connection, third.server], ['x?y', null], 'a control character is replaced');
+  });
 });
 
 describe('toon-probe: what a Toon without ToonWater, a broken Toon and a slow Toon look like', () => {

@@ -10,7 +10,7 @@
   "devDependencies": {
     "@types/homey": "npm:homey-apps-sdk-v3-types@^1.8.3",
     "@types/node": "~22",
-    "eslint": "~8.57.1",
+    "eslint": "~10.15.0",
     "eslint-config-athom": "~4.0.2",
     "homey": "~4.6.3"
   },

@@ -1,0 +1,125 @@
+[
+  {
+    "type": "group",
+    "label": {
+      "en": "Local Toon Settings",
+      "nl": "Lokale Toon-instellingen"
+    },
+    "children": [
+      {
+        "id": "address",
+        "type": "text",
+        "value": "0.0.0.0",
+        "pattern": "^\\s*(http://)?[A-Za-z0-9.\\-]+(:[0-9]{1,5})?/?\\s*$",
+        "label": {
+          "en": "IP Address",
+          "nl": "IP-adres"
+        },
+        "hint": {
+          "en": "The IPv4 address of your Toon on your local network, for example 192.168.1.50. Give the Toon a fixed address in your router.",
+          "nl": "Het IPv4-adres van je Toon op je lokale netwerk, bijvoorbeeld 192.168.1.50. Geef de Toon een vast adres in je router."
+        }
+      },
+      {
+        "id": "poll_interval",
+        "type": "number",
+        "value": 30,
+        "min": 10,
+        "max": 3600,
+        "step": 1,
+        "units": {
+          "en": "s",
+          "nl": "s"
+        },
+        "label": {
+          "en": "Update interval",
+          "nl": "Update-interval"
+        },
+        "hint": {
+          "en": "How often Homey reads the Toon. Lower values put more load on the Toon.",
+          "nl": "Hoe vaak Homey de Toon uitleest. Lagere waarden belasten de Toon meer."
+        }
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Status",
+      "nl": "Status"
+    },
+    "children": [
+      {
+        "id": "last_update",
+        "type": "label",
+        "value": "-",
+        "label": {
+          "en": "Last successful update",
+          "nl": "Laatste succesvolle update"
+        }
+      },
+      {
+        "id": "last_problem",
+        "type": "label",
+        "value": "-",
+        "label": {
+          "en": "Last problem",
+          "nl": "Laatste probleem"
+        }
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "ToonWater (optional add-on)",
+      "nl": "ToonWater (optionele add-on)"
+    },
+    "children": [
+      {
+        "id": "toonwater_enabled",
+        "type": "checkbox",
+        "value": false,
+        "label": {
+          "en": "Enable ToonWater water meter",
+          "nl": "ToonWater-watermeter inschakelen"
+        },
+        "hint": {
+          "en": "Only turn this on if the ToonWater add-on is installed on your Toon (the add-on that makes your water readings available on the Toon). This adds water flow, water today and water total to this device and water cards to the Flow editor. Turning it off removes them again; Flows that use them will break and their Insights history may be lost. After turning it back on, check those Flows.",
+          "nl": "Zet dit alleen aan als de ToonWater-add-on op je Toon is geïnstalleerd (de add-on die je watergegevens beschikbaar maakt op de Toon). Hierdoor komen waterdebiet, water vandaag en water totaal op dit apparaat en waterkaarten in de Flow-editor. Uitzetten verwijdert ze weer; Flows die ze gebruiken gaan kapot en hun Insights-geschiedenis kan verloren gaan. Controleer die Flows na het opnieuw inschakelen."
+        }
+      },
+      {
+        "id": "toonwater_status",
+        "type": "label",
+        "value": "-",
+        "label": {
+          "en": "ToonWater status",
+          "nl": "ToonWater-status"
+        }
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Power export (optional)",
+      "nl": "Teruglevering (optioneel)"
+    },
+    "children": [
+      {
+        "id": "export_enabled",
+        "type": "checkbox",
+        "value": false,
+        "label": {
+          "en": "Show power export",
+          "nl": "Teruglevering tonen"
+        },
+        "hint": {
+          "en": "Adds the production figure that your Toon reports, in watts, as a separate item on this device. Only useful if you have solar panels or another source that produces power. Whether it equals what you feed back into the grid depends on your meter setup and is not confirmed yet. Turning it off removes the item again; Flows that use it will break and its Insights history may be lost.",
+          "nl": "Voegt het opwekcijfer toe dat je Toon meldt, in watt, als apart onderdeel van dit apparaat. Alleen nuttig als je zonnepanelen of een andere bron hebt die stroom opwekt. Of het gelijk is aan wat je aan het net teruglevert hangt af van je meteropstelling en is nog niet bevestigd. Uitzetten verwijdert het onderdeel weer; Flows die het gebruiken gaan kapot en de Insights-geschiedenis kan verloren gaan."
+        }
+      }
+    ]
+  }
+]

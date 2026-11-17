@@ -1,0 +1,33 @@
+{
+  "extends": "athom/homey-app",
+  "parserOptions": {
+    "project": "./tsconfig.eslint.json"
+  },
+  "rules": {
+    "homey-app/global-timers": "error",
+    "homey-app/homey-log": "error"
+  },
+  "overrides": [
+    {
+      "files": ["test/**", "scripts/**"],
+      "rules": {
+        "homey-app/homey-log": "off"
+      }
+    },
+    {
+      "files": ["test/**"],
+      "rules": {
+        "mocha/no-mocha-arrows": "off",
+        "mocha/no-setup-in-describe": "off",
+        "mocha/max-top-level-suites": "off",
+        "mocha/no-hooks-for-single-case": "off",
+        "mocha/no-exclusive-tests": "error",
+        "@typescript-eslint/no-floating-promises": ["error", {
+          "ignoreVoid": false,
+          "allowForKnownSafeCalls": [{ "from": "package", "package": "node:test", "name": ["test", "describe", "it", "suite"] }]
+        }],
+        "node/no-unpublished-require": "off"
+      }
+    }
+  ]
+}

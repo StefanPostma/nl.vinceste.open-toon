@@ -1,0 +1,20 @@
+{
+  "source": "derived from 03 I3 (a setpoint set by another client, off the 0.5 step), not captured; HW-02",
+  "payload": {
+    "result": "ok",
+    "currentTemp": "2034",
+    "currentSetpoint": "1975",
+    "activeState": "1",
+    "programState": "1",
+    "burnerInfo": "0",
+    "currentModulationLevel": "0",
+    "currentInternalBoilerSetpoint": "6",
+    "otCommError": "0",
+    "errorFound": "255",
+    "connection": "0",
+    "nextProgram": "1",
+    "nextState": "2",
+    "nextTime": "1789000000",
+    "nextSetpoint": "1500"
+  }
+}

@@ -1,20 +1,41 @@
 {
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "nl.vinceste.open-toon",
-  "version": "1.0.0",
-  "compatibility": ">=5.0.0",
+  "version": "2.0.0",
+  "compatibility": ">=12.9.0",
   "sdk": 3,
+  "platforms": [
+    "local"
+  ],
   "name": {
     "en": "Open-Toon®",
     "nl": "Open-Toon®"
   },
   "description": {
-    "en": "Open - Toon®",
-    "nl": "Open - Toon®"
+    "en": "Control your open (rooted) Toon thermostat and read its energy meters from Homey, over your local network.",
+    "nl": "Bedien je open (geroote) Toon-thermostaat en lees de energiemeters uit in Homey, via je lokale netwerk."
+  },
+  "tags": {
+    "en": [
+      "toon",
+      "thermostat",
+      "heating",
+      "energy",
+      "gas",
+      "water"
+    ],
+    "nl": [
+      "toon",
+      "thermostaat",
+      "verwarming",
+      "energie",
+      "gas",
+      "water"
+    ]
   },
   "author": {
     "name": "Vinceste IT"
   },
-
   "contributors": {
     "developers": [
       {
@@ -22,16 +43,886 @@
       },
       {
         "name": "Paul Heeringa"
+      },
+      {
+        "name": "Dennis Moes (moezie)"
       }
     ]
   },
-
   "category": "climate",
+  "brandColor": "#E5532D",
+  "permissions": [],
   "images": {
     "large": "assets/images/large.png",
     "small": "assets/images/small.png"
   },
+  "support": "https://github.com/StefanPostma/nl.vinceste.open-toon/issues",
+  "source": "https://github.com/StefanPostma/nl.vinceste.open-toon",
+  "bugs": {
+    "url": "https://github.com/StefanPostma/nl.vinceste.open-toon/issues"
+  },
+  "homepage": "https://github.com/StefanPostma/nl.vinceste.open-toon",
+  "flow": {
+    "triggers": [
+      {
+        "id": "meter_gas_changed",
+        "deprecated": true,
+        "title": {
+          "en": "The gas meter changed",
+          "nl": "De gasmeter is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "meter_gas",
+            "type": "number",
+            "title": {
+              "en": "m³",
+              "nl": "m³"
+            },
+            "example": 25
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "meter_power_changed",
+        "title": {
+          "en": "The power meter changed",
+          "nl": "De energiemeter is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "meter_power",
+            "type": "number",
+            "title": {
+              "en": "kWh",
+              "nl": "kWh"
+            },
+            "example": 75
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "measure_water_changed",
+        "deprecated": true,
+        "title": {
+          "en": "The water flow changed",
+          "nl": "De waterflow is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "measure_water",
+            "type": "number",
+            "title": {
+              "en": "l/min",
+              "nl": "l/min"
+            },
+            "example": 75
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "temperature_state_changed",
+        "title": {
+          "en": "Temperature state changed",
+          "nl": "Temperatuurstand is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "temperature_state",
+            "type": "string",
+            "title": {
+              "en": "state",
+              "nl": "stand"
+            },
+            "example": {
+              "en": "Comfort",
+              "nl": "Comfort"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "alarm_water_changed",
+        "title": {
+          "en": "The hot water dispensing is changed",
+          "nl": "De warm water afgifte is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "alarm_water.hotwater",
+            "type": "boolean",
+            "title": {
+              "en": "Hot water dispensing",
+              "nl": "Warmwater afgifte"
+            },
+            "example": true
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "burner_state_changed_to",
+        "title": {
+          "en": "Burner state changed",
+          "nl": "Brander-stand is veranderd"
+        },
+        "titleFormatted": {
+          "en": "Burner state changed to [[state]]",
+          "nl": "Brander-stand is veranderd naar [[state]]"
+        },
+        "tokens": [
+          {
+            "name": "burner_state",
+            "type": "string",
+            "title": {
+              "en": "state",
+              "nl": "stand"
+            },
+            "example": {
+              "en": "Heating",
+              "nl": "Verwarmen"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "title": {
+              "en": "State",
+              "nl": "Stand"
+            },
+            "value": "any",
+            "values": [
+              {
+                "id": "any",
+                "title": {
+                  "en": "Any state",
+                  "nl": "Elke stand"
+                },
+                "label": {
+                  "en": "Any state",
+                  "nl": "Elke stand"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off",
+                  "nl": "Uit"
+                },
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              },
+              {
+                "id": "heating",
+                "title": {
+                  "en": "Heating",
+                  "nl": "Verwarmen"
+                },
+                "label": {
+                  "en": "Heating",
+                  "nl": "Verwarmen"
+                }
+              },
+              {
+                "id": "hot_water",
+                "title": {
+                  "en": "Hot water",
+                  "nl": "Warm water"
+                },
+                "label": {
+                  "en": "Hot water",
+                  "nl": "Warm water"
+                }
+              },
+              {
+                "id": "preheating",
+                "title": {
+                  "en": "Pre-heating",
+                  "nl": "Voorverwarmen"
+                },
+                "label": {
+                  "en": "Pre-heating",
+                  "nl": "Voorverwarmen"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "temperature_state_is",
+        "title": {
+          "en": "Temperature state !{{is|isn't}}",
+          "nl": "Temperatuurstand !{{is|is niet}}"
+        },
+        "titleFormatted": {
+          "en": "Current temperature state !{{is|isn't}} [[state]]",
+          "nl": "Huidige temperatuurstand !{{is|is niet}} gelijk aan [[state]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "title": {
+              "en": "State",
+              "nl": "Stand"
+            },
+            "value": "comfort",
+            "values": [
+              {
+                "id": "comfort",
+                "title": {
+                  "en": "Comfort",
+                  "nl": "Comfort"
+                },
+                "label": {
+                  "en": "Comfort",
+                  "nl": "Comfort"
+                }
+              },
+              {
+                "id": "home",
+                "title": {
+                  "en": "Home",
+                  "nl": "Thuis"
+                },
+                "label": {
+                  "en": "Home",
+                  "nl": "Thuis"
+                }
+              },
+              {
+                "id": "sleep",
+                "title": {
+                  "en": "Sleep",
+                  "nl": "Slapen"
+                },
+                "label": {
+                  "en": "Sleep",
+                  "nl": "Slapen"
+                }
+              },
+              {
+                "id": "away",
+                "title": {
+                  "en": "Away",
+                  "nl": "Weg"
+                },
+                "label": {
+                  "en": "Away",
+                  "nl": "Weg"
+                }
+              },
+              {
+                "id": "none",
+                "title": {
+                  "en": "No state",
+                  "nl": "Geen stand"
+                },
+                "label": {
+                  "en": "No state",
+                  "nl": "Geen stand"
+                }
+              },
+              {
+                "id": "vacation",
+                "title": {
+                  "en": "Vacation",
+                  "nl": "Vakantie"
+                },
+                "label": {
+                  "en": "Vacation",
+                  "nl": "Vakantie"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "hotwater_dispensing",
+        "title": {
+          "en": "Hot water !{{is|isn't}} dispensing",
+          "nl": "Warm water wordt !{{wel|niet}} afgegeven"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "burner_state_is",
+        "title": {
+          "en": "Burner state !{{is|isn't}}",
+          "nl": "Brander-stand !{{is|is niet}}"
+        },
+        "titleFormatted": {
+          "en": "Burner state !{{is|isn't}} [[state]]",
+          "nl": "Brander-stand !{{is|is niet}} [[state]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "title": {
+              "en": "State",
+              "nl": "Stand"
+            },
+            "value": "heating",
+            "values": [
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off",
+                  "nl": "Uit"
+                },
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              },
+              {
+                "id": "heating",
+                "title": {
+                  "en": "Heating",
+                  "nl": "Verwarmen"
+                },
+                "label": {
+                  "en": "Heating",
+                  "nl": "Verwarmen"
+                }
+              },
+              {
+                "id": "hot_water",
+                "title": {
+                  "en": "Hot water",
+                  "nl": "Warm water"
+                },
+                "label": {
+                  "en": "Hot water",
+                  "nl": "Warm water"
+                }
+              },
+              {
+                "id": "preheating",
+                "title": {
+                  "en": "Pre-heating",
+                  "nl": "Voorverwarmen"
+                },
+                "label": {
+                  "en": "Pre-heating",
+                  "nl": "Voorverwarmen"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "set_temperature_state",
+        "title": {
+          "en": "Set temperature state",
+          "nl": "Stel temperatuurstand in"
+        },
+        "titleFormatted": {
+          "en": "Set temperature state to [[state]], [[resume_program]]",
+          "nl": "Zet de temperatuurstand op [[state]], [[resume_program]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "title": {
+              "en": "State",
+              "nl": "Stand"
+            },
+            "value": "comfort",
+            "values": [
+              {
+                "id": "comfort",
+                "title": {
+                  "en": "Comfort",
+                  "nl": "Comfort"
+                },
+                "label": {
+                  "en": "Comfort",
+                  "nl": "Comfort"
+                }
+              },
+              {
+                "id": "home",
+                "title": {
+                  "en": "Home",
+                  "nl": "Thuis"
+                },
+                "label": {
+                  "en": "Home",
+                  "nl": "Thuis"
+                }
+              },
+              {
+                "id": "sleep",
+                "title": {
+                  "en": "Sleep",
+                  "nl": "Slapen"
+                },
+                "label": {
+                  "en": "Sleep",
+                  "nl": "Slapen"
+                }
+              },
+              {
+                "id": "away",
+                "title": {
+                  "en": "Away",
+                  "nl": "Weg"
+                },
+                "label": {
+                  "en": "Away",
+                  "nl": "Weg"
+                }
+              }
+            ]
+          },
+          {
+            "name": "resume_program",
+            "type": "dropdown",
+            "title": {
+              "en": "Program",
+              "nl": "Programma"
+            },
+            "value": "yes",
+            "values": [
+              {
+                "id": "yes",
+                "title": {
+                  "en": "Resume program afterwards",
+                  "nl": "Hervat programma na wijziging"
+                },
+                "label": {
+                  "en": "Resume program afterwards",
+                  "nl": "Hervat programma na wijziging"
+                }
+              },
+              {
+                "id": "no",
+                "title": {
+                  "en": "Disable program",
+                  "nl": "Schakel programma uit"
+                },
+                "label": {
+                  "en": "Disable program",
+                  "nl": "Schakel programma uit"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "enable_program",
+        "title": {
+          "en": "Enable program",
+          "nl": "Zet programma aan"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "disable_program",
+        "title": {
+          "en": "Disable program",
+          "nl": "Zet programma uit"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "update_status",
+        "title": {
+          "en": "Update now",
+          "nl": "Update nu"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "update_powerusage",
+        "deprecated": true,
+        "title": {
+          "en": "Update power usage",
+          "nl": "Update stroomgebruik"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "update_water",
+        "deprecated": true,
+        "title": {
+          "en": "Update water",
+          "nl": "Update water"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      },
+      {
+        "id": "update_metertotals",
+        "deprecated": true,
+        "title": {
+          "en": "Update meter totals",
+          "nl": "Update meterstanden"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=open-toon"
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Open Toon®",
+        "nl": "Open Toon®"
+      },
+      "images": {
+        "large": "drivers/open-toon/assets/images/large.png",
+        "small": "drivers/open-toon/assets/images/small.png"
+      },
+      "class": "thermostat",
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "capabilities": [
+        "target_temperature",
+        "measure_temperature",
+        "temperature_state",
+        "meter_power.peak",
+        "meter_power.offPeak",
+        "measure_power",
+        "meter_gas",
+        "alarm_water.hotwater",
+        "burner_state"
+      ],
+      "energy": {
+        "cumulative": true
+      },
+      "capabilitiesOptions": {
+        "target_temperature": {
+          "step": 0.5,
+          "min": 6,
+          "max": 30
+        },
+        "meter_power.peak": {
+          "title": {
+            "en": "Power meter peak (total)",
+            "nl": "Stroom meterstand piek"
+          }
+        },
+        "meter_power.offPeak": {
+          "title": {
+            "en": "Power meter off-peak (total)",
+            "nl": "Stroom meterstand dal"
+          }
+        },
+        "measure_water": {},
+        "meter_water.today": {
+          "title": {
+            "en": "Water today",
+            "nl": "Water vandaag"
+          }
+        },
+        "meter_water.total": {
+          "title": {
+            "en": "Water meter total",
+            "nl": "Water meter totaal"
+          }
+        },
+        "measure_power.export": {
+          "title": {
+            "en": "Power export",
+            "nl": "Teruglevering"
+          }
+        },
+        "alarm_water.hotwater": {
+          "title": {
+            "en": "Hot water dispensing",
+            "nl": "Warm water afgifte"
+          }
+        }
+      },
+      "pair": [
+        {
+          "id": "start"
+        }
+      ],
+      "id": "open-toon",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Local Toon Settings",
+            "nl": "Lokale Toon-instellingen"
+          },
+          "children": [
+            {
+              "id": "address",
+              "type": "text",
+              "value": "0.0.0.0",
+              "pattern": "^\\s*(http://)?[A-Za-z0-9.\\-]+(:[0-9]{1,5})?/?\\s*$",
+              "label": {
+                "en": "IP Address",
+                "nl": "IP-adres"
+              },
+              "hint": {
+                "en": "The IPv4 address of your Toon on your local network, for example 192.168.1.50. Give the Toon a fixed address in your router.",
+                "nl": "Het IPv4-adres van je Toon op je lokale netwerk, bijvoorbeeld 192.168.1.50. Geef de Toon een vast adres in je router."
+              }
+            },
+            {
+              "id": "poll_interval",
+              "type": "number",
+              "value": 30,
+              "min": 10,
+              "max": 3600,
+              "step": 1,
+              "units": {
+                "en": "s",
+                "nl": "s"
+              },
+              "label": {
+                "en": "Update interval",
+                "nl": "Update-interval"
+              },
+              "hint": {
+                "en": "How often Homey reads the Toon. Lower values put more load on the Toon.",
+                "nl": "Hoe vaak Homey de Toon uitleest. Lagere waarden belasten de Toon meer."
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Status",
+            "nl": "Status"
+          },
+          "children": [
+            {
+              "id": "last_update",
+              "type": "label",
+              "value": "-",
+              "label": {
+                "en": "Last successful update",
+                "nl": "Laatste succesvolle update"
+              }
+            },
+            {
+              "id": "last_problem",
+              "type": "label",
+              "value": "-",
+              "label": {
+                "en": "Last problem",
+                "nl": "Laatste probleem"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "ToonWater (optional add-on)",
+            "nl": "ToonWater (optionele add-on)"
+          },
+          "children": [
+            {
+              "id": "toonwater_enabled",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Enable ToonWater water meter",
+                "nl": "ToonWater-watermeter inschakelen"
+              },
+              "hint": {
+                "en": "Only turn this on if the ToonWater add-on is installed on your Toon (the add-on that makes your water readings available on the Toon). This adds water flow, water today and water total to this device and water cards to the Flow editor. Turning it off removes them again; Flows that use them will break and their Insights history may be lost. After turning it back on, check those Flows.",
+                "nl": "Zet dit alleen aan als de ToonWater-add-on op je Toon is geïnstalleerd (de add-on die je watergegevens beschikbaar maakt op de Toon). Hierdoor komen waterdebiet, water vandaag en water totaal op dit apparaat en waterkaarten in de Flow-editor. Uitzetten verwijdert ze weer; Flows die ze gebruiken gaan kapot en hun Insights-geschiedenis kan verloren gaan. Controleer die Flows na het opnieuw inschakelen."
+              }
+            },
+            {
+              "id": "toonwater_status",
+              "type": "label",
+              "value": "-",
+              "label": {
+                "en": "ToonWater status",
+                "nl": "ToonWater-status"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Power export (optional)",
+            "nl": "Teruglevering (optioneel)"
+          },
+          "children": [
+            {
+              "id": "export_enabled",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Show power export",
+                "nl": "Teruglevering tonen"
+              },
+              "hint": {
+                "en": "Adds the production figure that your Toon reports, in watts, as a separate item on this device. Only useful if you have solar panels or another source that produces power. Whether it equals what you feed back into the grid depends on your meter setup and is not confirmed yet. Turning it off removes the item again; Flows that use it will break and its Insights history may be lost.",
+                "nl": "Voegt het opwekcijfer toe dat je Toon meldt, in watt, als apart onderdeel van dit apparaat. Alleen nuttig als je zonnepanelen of een andere bron hebt die stroom opwekt. Of het gelijk is aan wat je aan het net teruglevert hangt af van je meteropstelling en is nog niet bevestigd. Uitzetten verwijdert het onderdeel weer; Flows die het gebruiken gaan kapot en de Insights-geschiedenis kan verloren gaan."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "capabilities": {
+    "burner_state": {
+      "type": "enum",
+      "title": {
+        "en": "Burner",
+        "nl": "Brander"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": false,
+      "values": [
+        {
+          "id": "off",
+          "title": {
+            "en": "Off",
+            "nl": "Uit"
+          }
+        },
+        {
+          "id": "heating",
+          "title": {
+            "en": "Heating",
+            "nl": "Verwarmen"
+          }
+        },
+        {
+          "id": "hot_water",
+          "title": {
+            "en": "Hot water",
+            "nl": "Warm water"
+          }
+        },
+        {
+          "id": "preheating",
+          "title": {
+            "en": "Pre-heating",
+            "nl": "Voorverwarmen"
+          }
+        }
+      ]
+    },
     "temperature_state": {
       "type": "enum",
       "title": {
@@ -75,468 +966,15 @@
             "en": "No state",
             "nl": "Geen stand"
           }
+        },
+        {
+          "id": "vacation",
+          "title": {
+            "en": "Vacation",
+            "nl": "Vakantie"
+          }
         }
       ]
     }
-  },
-  "drivers": [
-    {
-      "id": "open-toon",
-      "name": {
-        "en": "Open Toon®",
-        "nl": "Open Toon®"
-      },
-      "images": {
-        "large": "drivers/open-toon/assets/images/large.png",
-        "small": "drivers/open-toon/assets/images/small.png"
-      },
-      "class": "thermostat",
-      "capabilities": [
-        "target_temperature",
-        "measure_temperature",
-        "temperature_state",
-        "meter_power.peak",
-        "meter_power.offPeak",
-        "measure_power",
-        "meter_gas",
-        "measure_water",
-        "meter_water.today",
-        "meter_water.total",
-        "alarm_water.hotwater"
-      ],
-      "energy": {
-        "cumulative": true
-      },
-      "capabilitiesOptions": {
-        "target_temperature": {
-          "step": 0.5,
-          "min": 6,
-          "max": 30
-        },
-        "meter_power.peak": {
-          "title": {
-            "en": "Power meter peak (total)",
-            "nl": "Stroom meterstand piek"
-          }
-        },
-        "meter_power.offPeak": {
-          "title": {
-            "en": "Power meter off-peak (total)",
-            "nl": "Stroom meterstand dal"
-          }
-        },
-        "meter_water.today": {
-          "title": {
-            "en": "Water today",
-            "nl": "Water vandaag"
-          }
-        },
-        "meter_water.total": {
-          "title": {
-            "en": "Water meter total",
-            "nl": "Water meter totaal"
-          }
-        },
-        "alarm_water.hotwater": {
-          "title": {
-            "en": "Hot water dispensing",
-            "nl": "Warm water afgifte"
-          }
-        }
-      },
-      "pair": [
-        {
-          "id": "start"
-        }
-      ],
-      "settings": [
-        {
-          "type": "group",
-          "label": {
-            "en": "Local Toon Settings",
-            "nl": "Lokale Toon Instellingen"
-          },
-          "children": [
-            {
-              "id": "address",
-              "type": "text",
-              "value": "0.0.0.0",
-              "label": {
-                "en": "IP Address",
-                "nl": "IP Adres"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "flow": {
-    "triggers": [
-      {
-        "id": "meter_gas_changed",
-        "title": {
-          "en": "The gas meter changed",
-          "nl": "De gasmeter is veranderd"
-        },
-        "tokens": [
-          {
-            "name": "meter_gas",
-            "type": "number",
-            "title": {
-              "en": "m³",
-              "nl": "m³"
-            },
-            "example": 25
-          }
-        ],
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      },
-      {
-        "id": "meter_power_changed",
-        "title": {
-          "en": "The power meter changed",
-          "nl": "De energiemeter is veranderd"
-        },
-        "tokens": [
-          {
-            "name": "meter_power",
-            "type": "number",
-            "title": {
-              "en": "Wh",
-              "nl": "Wh"
-            },
-            "example": 75
-          }
-        ],
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      },
-      {
-        "id": "measure_water_changed",
-        "title": {
-          "en": "The water flow changed",
-          "nl": "De waterflow is veranderd"
-        },
-        "tokens": [
-          {
-            "name": "measure_water",
-            "type": "number",
-            "title": {
-              "en": "l/min",
-              "nl": "l/min"
-            },
-            "example": 75
-          }
-        ],
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      },
-      {
-        "id": "temperature_state_changed",
-        "title": {
-          "en": "Temperature state changed",
-          "nl": "Temperatuurstand is veranderd"
-        },
-        "tokens": [
-          {
-            "name": "temperature_state",
-            "type": "string",
-            "title": {
-              "en": "state",
-              "nl": "stand"
-            },
-            "example": {
-              "en": "Comfort",
-              "nl": "Comfort"
-            }
-          }
-        ],
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      },
-      {
-        "id": "alarm_water_changed",
-        "title": {
-          "en": "The hot water dispensing is changed",
-          "nl": "De warm water afgifte is veranderd"
-        },
-        "tokens": [
-          {
-            "name": "alarm_water.hotwater",
-            "type": "boolean",
-            "title": {
-              "en": "Hotwater dispensing",
-              "nl": "Warmwater afgifte"
-            },
-            "example": true
-          }
-        ],
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      }
-    ],
-    "conditions": [
-      {
-        "id": "temperature_state_is",
-        "title": {
-          "en": "Temperature state !{{is|isn't}}",
-          "nl": "Temperatuurstand !{{is|is niet}}"
-        },
-        "titleFormatted": {
-          "en": "Current temperature state !{{is|isn't}} [[state]]",
-          "nl": "Huidige temperatuurstand !{{is||is niet}} gelijk aan [[state]]"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          },
-          {
-            "name": "state",
-            "type": "dropdown",
-            "value": "comfort",
-            "values": [
-              {
-                "id": "comfort",
-                "label": {
-                  "en": "Comfort",
-                  "nl": "Comfort"
-                }
-              },
-              {
-                "id": "home",
-                "label": {
-                  "en": "Home",
-                  "nl": "Thuis"
-                }
-              },
-              {
-                "id": "sleep",
-                "label": {
-                  "en": "Sleep",
-                  "nl": "Slapen"
-                }
-              },
-              {
-                "id": "away",
-                "label": {
-                  "en": "Away",
-                  "nl": "Weg"
-                }
-              },
-              {
-                "id": "none",
-                "label": {
-                  "en": "No state",
-                  "nl": "Geen stand"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "hotwater_dispensing",
-        "title": {
-          "en": "Hot water !{{is|isn't}} dispensing",
-          "nl": "Warm water wordt !{{wel|niet}} afgegeven"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      }
-    ],
-    "actions": [
-      {
-        "id": "set_temperature_state",
-        "title": {
-          "en": "Set temperature state",
-          "nl": "Stel temperatuurstand in"
-        },
-        "titleFormatted": {
-          "en": "Set temperature state to [[state]]",
-          "nl": "Zet de temperatuurstand op [[state]]"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          },
-          {
-            "name": "state",
-            "type": "dropdown",
-            "value": "comfort",
-            "values": [
-              {
-                "id": "comfort",
-                "label": {
-                  "en": "Comfort",
-                  "nl": "Comfort"
-                }
-              },
-              {
-                "id": "home",
-                "label": {
-                  "en": "Home",
-                  "nl": "Thuis"
-                }
-              },
-              {
-                "id": "sleep",
-                "label": {
-                  "en": "Sleep",
-                  "nl": "Slapen"
-                }
-              },
-              {
-                "id": "away",
-                "label": {
-                  "en": "Away",
-                  "nl": "Weg"
-                }
-              }
-            ]
-          },
-          {
-            "name": "resume_program",
-            "type": "dropdown",
-            "value": "yes",
-            "values": [
-              {
-                "id": "yes",
-                "label": {
-                  "en": "Resume program afterwards",
-                  "nl": "Hervat programma na wijziging"
-                }
-              },
-              {
-                "id": "no",
-                "label": {
-                  "en": "Disable program",
-                  "nl": "Schakel programma uit"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "enable_program",
-        "title": {
-          "en": "Enable program",
-          "nl": "Zet programma aan"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      },
-      {
-        "id": "disable_program",
-        "title": {
-          "en": "Disable program",
-          "nl": "Zet programma uit"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      },
-      {
-        "id": "update_status",
-        "title": {
-          "en": "Update status",
-          "nl": "Update waardes"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      },
-      {
-        "id": "update_powerusage",
-        "title": {
-          "en": "Update power usage",
-          "nl": "Update stroom gebruik"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      },
-      {
-        "id": "update_water",
-        "title": {
-          "en": "Update water",
-          "nl": "Update water"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      },
-      {
-        "id": "update_metertotals",
-        "title": {
-          "en": "Update meter totals",
-          "nl": "Update meterstanden"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=open-toon"
-          }
-        ]
-      }
-    ]
   }
 }

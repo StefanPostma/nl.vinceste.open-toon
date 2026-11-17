@@ -1,0 +1,507 @@
+{
+  "triggers": [
+    {
+      "id": "meter_gas_changed",
+      "deprecated": true,
+      "title": {
+        "en": "The gas meter changed",
+        "nl": "De gasmeter is veranderd"
+      },
+      "tokens": [
+        {
+          "name": "meter_gas",
+          "type": "number",
+          "title": {
+            "en": "m³",
+            "nl": "m³"
+          },
+          "example": 25
+        }
+      ]
+    },
+    {
+      "id": "meter_power_changed",
+      "title": {
+        "en": "The power meter changed",
+        "nl": "De energiemeter is veranderd"
+      },
+      "tokens": [
+        {
+          "name": "meter_power",
+          "type": "number",
+          "title": {
+            "en": "kWh",
+            "nl": "kWh"
+          },
+          "example": 75
+        }
+      ]
+    },
+    {
+      "id": "measure_water_changed",
+      "deprecated": true,
+      "title": {
+        "en": "The water flow changed",
+        "nl": "De waterflow is veranderd"
+      },
+      "tokens": [
+        {
+          "name": "measure_water",
+          "type": "number",
+          "title": {
+            "en": "l/min",
+            "nl": "l/min"
+          },
+          "example": 75
+        }
+      ]
+    },
+    {
+      "id": "temperature_state_changed",
+      "title": {
+        "en": "Temperature state changed",
+        "nl": "Temperatuurstand is veranderd"
+      },
+      "tokens": [
+        {
+          "name": "temperature_state",
+          "type": "string",
+          "title": {
+            "en": "state",
+            "nl": "stand"
+          },
+          "example": {
+            "en": "Comfort",
+            "nl": "Comfort"
+          }
+        }
+      ]
+    },
+    {
+      "id": "alarm_water_changed",
+      "title": {
+        "en": "The hot water dispensing is changed",
+        "nl": "De warm water afgifte is veranderd"
+      },
+      "tokens": [
+        {
+          "name": "alarm_water.hotwater",
+          "type": "boolean",
+          "title": {
+            "en": "Hot water dispensing",
+            "nl": "Warmwater afgifte"
+          },
+          "example": true
+        }
+      ]
+    },
+    {
+      "id": "burner_state_changed_to",
+      "title": {
+        "en": "Burner state changed",
+        "nl": "Brander-stand is veranderd"
+      },
+      "titleFormatted": {
+        "en": "Burner state changed to [[state]]",
+        "nl": "Brander-stand is veranderd naar [[state]]"
+      },
+      "tokens": [
+        {
+          "name": "burner_state",
+          "type": "string",
+          "title": {
+            "en": "state",
+            "nl": "stand"
+          },
+          "example": {
+            "en": "Heating",
+            "nl": "Verwarmen"
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "state",
+          "type": "dropdown",
+          "title": {
+            "en": "State",
+            "nl": "Stand"
+          },
+          "value": "any",
+          "values": [
+            {
+              "id": "any",
+              "title": {
+                "en": "Any state",
+                "nl": "Elke stand"
+              },
+              "label": {
+                "en": "Any state",
+                "nl": "Elke stand"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off",
+                "nl": "Uit"
+              },
+              "label": {
+                "en": "Off",
+                "nl": "Uit"
+              }
+            },
+            {
+              "id": "heating",
+              "title": {
+                "en": "Heating",
+                "nl": "Verwarmen"
+              },
+              "label": {
+                "en": "Heating",
+                "nl": "Verwarmen"
+              }
+            },
+            {
+              "id": "hot_water",
+              "title": {
+                "en": "Hot water",
+                "nl": "Warm water"
+              },
+              "label": {
+                "en": "Hot water",
+                "nl": "Warm water"
+              }
+            },
+            {
+              "id": "preheating",
+              "title": {
+                "en": "Pre-heating",
+                "nl": "Voorverwarmen"
+              },
+              "label": {
+                "en": "Pre-heating",
+                "nl": "Voorverwarmen"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "temperature_state_is",
+      "title": {
+        "en": "Temperature state !{{is|isn't}}",
+        "nl": "Temperatuurstand !{{is|is niet}}"
+      },
+      "titleFormatted": {
+        "en": "Current temperature state !{{is|isn't}} [[state]]",
+        "nl": "Huidige temperatuurstand !{{is|is niet}} gelijk aan [[state]]"
+      },
+      "args": [
+        {
+          "name": "state",
+          "type": "dropdown",
+          "title": {
+            "en": "State",
+            "nl": "Stand"
+          },
+          "value": "comfort",
+          "values": [
+            {
+              "id": "comfort",
+              "title": {
+                "en": "Comfort",
+                "nl": "Comfort"
+              },
+              "label": {
+                "en": "Comfort",
+                "nl": "Comfort"
+              }
+            },
+            {
+              "id": "home",
+              "title": {
+                "en": "Home",
+                "nl": "Thuis"
+              },
+              "label": {
+                "en": "Home",
+                "nl": "Thuis"
+              }
+            },
+            {
+              "id": "sleep",
+              "title": {
+                "en": "Sleep",
+                "nl": "Slapen"
+              },
+              "label": {
+                "en": "Sleep",
+                "nl": "Slapen"
+              }
+            },
+            {
+              "id": "away",
+              "title": {
+                "en": "Away",
+                "nl": "Weg"
+              },
+              "label": {
+                "en": "Away",
+                "nl": "Weg"
+              }
+            },
+            {
+              "id": "none",
+              "title": {
+                "en": "No state",
+                "nl": "Geen stand"
+              },
+              "label": {
+                "en": "No state",
+                "nl": "Geen stand"
+              }
+            },
+            {
+              "id": "vacation",
+              "title": {
+                "en": "Vacation",
+                "nl": "Vakantie"
+              },
+              "label": {
+                "en": "Vacation",
+                "nl": "Vakantie"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hotwater_dispensing",
+      "title": {
+        "en": "Hot water !{{is|isn't}} dispensing",
+        "nl": "Warm water wordt !{{wel|niet}} afgegeven"
+      }
+    },
+    {
+      "id": "burner_state_is",
+      "title": {
+        "en": "Burner state !{{is|isn't}}",
+        "nl": "Brander-stand !{{is|is niet}}"
+      },
+      "titleFormatted": {
+        "en": "Burner state !{{is|isn't}} [[state]]",
+        "nl": "Brander-stand !{{is|is niet}} [[state]]"
+      },
+      "args": [
+        {
+          "name": "state",
+          "type": "dropdown",
+          "title": {
+            "en": "State",
+            "nl": "Stand"
+          },
+          "value": "heating",
+          "values": [
+            {
+              "id": "off",
+              "title": {
+                "en": "Off",
+                "nl": "Uit"
+              },
+              "label": {
+                "en": "Off",
+                "nl": "Uit"
+              }
+            },
+            {
+              "id": "heating",
+              "title": {
+                "en": "Heating",
+                "nl": "Verwarmen"
+              },
+              "label": {
+                "en": "Heating",
+                "nl": "Verwarmen"
+              }
+            },
+            {
+              "id": "hot_water",
+              "title": {
+                "en": "Hot water",
+                "nl": "Warm water"
+              },
+              "label": {
+                "en": "Hot water",
+                "nl": "Warm water"
+              }
+            },
+            {
+              "id": "preheating",
+              "title": {
+                "en": "Pre-heating",
+                "nl": "Voorverwarmen"
+              },
+              "label": {
+                "en": "Pre-heating",
+                "nl": "Voorverwarmen"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "set_temperature_state",
+      "title": {
+        "en": "Set temperature state",
+        "nl": "Stel temperatuurstand in"
+      },
+      "titleFormatted": {
+        "en": "Set temperature state to [[state]], [[resume_program]]",
+        "nl": "Zet de temperatuurstand op [[state]], [[resume_program]]"
+      },
+      "args": [
+        {
+          "name": "state",
+          "type": "dropdown",
+          "title": {
+            "en": "State",
+            "nl": "Stand"
+          },
+          "value": "comfort",
+          "values": [
+            {
+              "id": "comfort",
+              "title": {
+                "en": "Comfort",
+                "nl": "Comfort"
+              },
+              "label": {
+                "en": "Comfort",
+                "nl": "Comfort"
+              }
+            },
+            {
+              "id": "home",
+              "title": {
+                "en": "Home",
+                "nl": "Thuis"
+              },
+              "label": {
+                "en": "Home",
+                "nl": "Thuis"
+              }
+            },
+            {
+              "id": "sleep",
+              "title": {
+                "en": "Sleep",
+                "nl": "Slapen"
+              },
+              "label": {
+                "en": "Sleep",
+                "nl": "Slapen"
+              }
+            },
+            {
+              "id": "away",
+              "title": {
+                "en": "Away",
+                "nl": "Weg"
+              },
+              "label": {
+                "en": "Away",
+                "nl": "Weg"
+              }
+            }
+          ]
+        },
+        {
+          "name": "resume_program",
+          "type": "dropdown",
+          "title": {
+            "en": "Program",
+            "nl": "Programma"
+          },
+          "value": "yes",
+          "values": [
+            {
+              "id": "yes",
+              "title": {
+                "en": "Resume program afterwards",
+                "nl": "Hervat programma na wijziging"
+              },
+              "label": {
+                "en": "Resume program afterwards",
+                "nl": "Hervat programma na wijziging"
+              }
+            },
+            {
+              "id": "no",
+              "title": {
+                "en": "Disable program",
+                "nl": "Schakel programma uit"
+              },
+              "label": {
+                "en": "Disable program",
+                "nl": "Schakel programma uit"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "enable_program",
+      "title": {
+        "en": "Enable program",
+        "nl": "Zet programma aan"
+      }
+    },
+    {
+      "id": "disable_program",
+      "title": {
+        "en": "Disable program",
+        "nl": "Zet programma uit"
+      }
+    },
+    {
+      "id": "update_status",
+      "title": {
+        "en": "Update now",
+        "nl": "Update nu"
+      }
+    },
+    {
+      "id": "update_powerusage",
+      "deprecated": true,
+      "title": {
+        "en": "Update power usage",
+        "nl": "Update stroomgebruik"
+      }
+    },
+    {
+      "id": "update_water",
+      "deprecated": true,
+      "title": {
+        "en": "Update water",
+        "nl": "Update water"
+      }
+    },
+    {
+      "id": "update_metertotals",
+      "deprecated": true,
+      "title": {
+        "en": "Update meter totals",
+        "nl": "Update meterstanden"
+      }
+    }
+  ]
+}

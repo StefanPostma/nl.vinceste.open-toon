@@ -1,0 +1,41 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Burner",
+    "nl": "Brander"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "insights": false,
+  "values": [
+    {
+      "id": "off",
+      "title": {
+        "en": "Off",
+        "nl": "Uit"
+      }
+    },
+    {
+      "id": "heating",
+      "title": {
+        "en": "Heating",
+        "nl": "Verwarmen"
+      }
+    },
+    {
+      "id": "hot_water",
+      "title": {
+        "en": "Hot water",
+        "nl": "Warm water"
+      }
+    },
+    {
+      "id": "preheating",
+      "title": {
+        "en": "Pre-heating",
+        "nl": "Voorverwarmen"
+      }
+    }
+  ]
+}

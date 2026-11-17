@@ -1,0 +1,53 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Temperature state",
+    "nl": "Temperatuurstand"
+  },
+  "getable": true,
+  "setable": true,
+  "values": [
+    {
+      "id": "comfort",
+      "title": {
+        "en": "Comfort",
+        "nl": "Comfort"
+      }
+    },
+    {
+      "id": "home",
+      "title": {
+        "en": "Home",
+        "nl": "Thuis"
+      }
+    },
+    {
+      "id": "sleep",
+      "title": {
+        "en": "Sleep",
+        "nl": "Slapen"
+      }
+    },
+    {
+      "id": "away",
+      "title": {
+        "en": "Away",
+        "nl": "Weg"
+      }
+    },
+    {
+      "id": "none",
+      "title": {
+        "en": "No state",
+        "nl": "Geen stand"
+      }
+    },
+    {
+      "id": "vacation",
+      "title": {
+        "en": "Vacation",
+        "nl": "Vakantie"
+      }
+    }
+  ]
+}

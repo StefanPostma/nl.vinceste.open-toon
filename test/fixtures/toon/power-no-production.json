@@ -1,0 +1,14 @@
+{
+  "source": "derived from 03 I6 (older firmware without powerProduction), not captured; HW-02",
+  "payload": {
+    "result": "ok",
+    "powerUsage": {
+      "value": 324,
+      "avgValue": 249.07
+    },
+    "gasUsage": {
+      "value": null,
+      "avgValue": null
+    }
+  }
+}

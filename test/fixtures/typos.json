@@ -1,0 +1,12 @@
+[
+  { "text": "Somethink", "languages": ["en", "nl"], "why": "typo of 'something' in the baseline pairing error" },
+  { "text": "happend", "languages": ["en", "nl"], "why": "typo of 'happened'" },
+  { "text": "succesfull", "languages": ["en"], "why": "typo of 'successful' and 'successfully'" },
+  { "text": "succesful", "languages": ["en"], "why": "typo of 'successful'" },
+  { "text": "succesfully", "languages": ["en"], "why": "typo of 'successfully'" },
+  { "text": "an unique", "languages": ["en"], "why": "'a unique': 'unique' starts with a consonant sound" },
+  { "text": "Mi Home", "languages": ["en", "nl"], "why": "copy-paste from the Xiaomi app the pairing view was copied from" },
+  { "text": "IP adres", "languages": ["en"], "why": "Dutch spelling in the English file; Dutch is 'IP-adres'" },
+  { "text": "token", "languages": ["nl"], "why": "the Toon needs no token; leftover of the Xiaomi pairing text (FR-101 AC1)" },
+  { "text": "battery", "languages": ["nl"], "why": "a Toon has no battery level; leftover of the Xiaomi pairing text (FR-101 AC1)" }
+]

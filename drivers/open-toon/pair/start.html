@@ -1,117 +1,239 @@
-<script type="text/javascript">
-Homey.setTitle( __('pair.title') );
-$(function() {
-    $('#test-connection').click(function() {
-        $('.mi-device-test').hide();
-        $('.mi-device-error').hide();
-        $('.mi-device-ok').hide();
-		var inputaddress = $('#address').val();
-        if (inputaddress != '') {
-            var device_data = {
-                address: inputaddress,
-            };
-            Homey.emit('testConnection', device_data, function(error, result) {
-                if(error) {
-                    $('.mi-device-error').show();
-                    $('.mi-device-error-msg').html(error.message || error.toString());
-                } else if (result) {
-                    var mideviceinfo = "<h2 data-i18n='pair.philipsbulb'>Philips Light Bulb</h2><div class='info-row'><span class='info-label' data-i18n='pair.powered'>Powered:</span><span class='info-value'> </span></div><div class='info-row'><span class='info-label' data-i18n='pair.dim'>Dim Level:</span><span class='info-value'> "+ result.updateDataSet +"</span></div><div class='info-row'><span class='info-label' data-i18n='pair.colortemperature'>Color Temperature:</span><span class='info-value'> "+ result.updateDataSet +"</span></div>";
-                    $('.mi-device-info').show();
-                    $('.mi-device-info').html(mideviceinfo);
-                    $('.mi-device-test').show();
-                    $('#connect').prop('disabled', false);
-                } else {
-                    $('.mi-device-error').show();
-                    $('.mi-device-error-msg').html( __('pair.unknownerror') );
-                }
-            });
-        } else {
-            $('.mi-device-error').show();
-            $('.mi-device-error-msg').html( __('pair.nosettings') );
-        }
-	});
-	$('#connect').click(function(){
-		var inputaddress = $('#address').val();
-    	var deviceName = $('#GivenName').val();
-        if( inputaddress != '' && deviceName !='') {
-            var device_data = {
-                id: deviceName
-            };
-            var settings = {
-                address: inputaddress,
-            };
-            Homey.addDevice({
-                name  	 : 'ToonDevice',
-                data 	 : device_data,
-                settings : settings
-            }, function(error, result) {
-                if (error) {
-                    $('.mi-device-test').hide();
-                    $('.mi-device-error').show();
-                    $('.mi-device-error-msg').html(error.message || error.toString());
-                }
-                $('.mi-device-test').hide();
-                $('.mi-device-ok').show();
-                Homey.done();
-            })
-        } else {
-            $('.mi-device-test').hide();
-            $('.mi-device-error').show();
-            $('.mi-device-error-msg').html( __('pair.nosettings') );
-        }
-	});
-})
-</script>
-
-<style type="text/css">
-    .mi-device-pairing {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    }
-    .mi-device-pairing .col1, .mi-device-pairing .col2 {
-        width: 48%;
-    }
-    .mi-device-status, .mi-device-info {
-		display: none;
-	}
-    .mi-device-info {
-        font-size: 12px;
-    }
-    .mi-device-info .info-row {
-        min-width: 150px;
-        padding-bottom: 4px;
-        font-weight: 700;
-    }
-    .mi-device-info .info-label {
-        display: inline-block;
-        min-width: 100px;
-        font-weight: 700;
-    }
-    .form-group input[type="text"] {
-        width: 80% !important;
-    }
-    .buttons, .messages {
-        padding-top: 14px;
-    }
+<style>
+  [hidden] {
+    display: none !important;
+  }
+  .pair-hint {
+    margin-block: 0.5em 0;
+    font-size: 0.875em;
+    opacity: 0.75;
+  }
+  .pair-error {
+    color: var(--homey-color-danger, #d93025);
+    font-weight: 600;
+  }
+  .pair-ok {
+    font-weight: 600;
+  }
+  .pair-readings {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.25em 1em;
+    margin-block: 0.5em 1em;
+  }
+  .pair-readings dt {
+    opacity: 0.75;
+  }
+  .pair-readings dd {
+    margin: 0;
+    font-weight: 600;
+  }
+  .pair-actions {
+    display: grid;
+    gap: 0.75em;
+    margin-block-start: 1em;
+  }
 </style>
 
-<p data-i18n="pair.intro">Enter the details of device.</p>
-<div class="mi-device-pairing">
-    <div class="col1">
-        <div class="form-group">
-            <label for="address" data-i18n="pair.address">IP address</label>
-            <input type="text" class="form-control" id="address" placeholder="192.168.0.100">
-        </div>
-        <div class="form-group">
-            <label for="GivenName" data-i18n="pair.name">Toon Hostname</label>
-            <input type="text" class="form-control" id="GivenName" placeholder="ENECO-001-12391">
-        </div>
-        <div class="form-group buttons">
-           <button id="connect" class="button" data-i18n="pair.connect" >Connect</button>
-        </div>
-    </div>
-    <div class="col2">
-        <div class="mi-device-info"></div>
-    </div>
+<p class="homey-subtitle" data-i18n="pair.intro"></p>
+
+<div class="homey-form">
+  <div class="homey-form-group">
+    <label class="homey-form-label" for="address" data-i18n="pair.address"></label>
+    <input class="homey-form-input" id="address" type="text" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="192.168.1.50">
+  </div>
+  <div class="homey-form-group">
+    <label class="homey-form-label" for="toon-id" data-i18n="pair.id"></label>
+    <input class="homey-form-input" id="toon-id" type="text" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <p class="pair-hint" data-i18n="pair.id_hint"></p>
+  </div>
+  <div class="homey-form-group">
+    <label class="homey-form-label" for="name" data-i18n="pair.name"></label>
+    <input class="homey-form-input" id="name" type="text" autocomplete="off">
+    <p class="pair-hint" data-i18n="pair.name_hint"></p>
+  </div>
+
+  <p class="pair-error" id="error" role="alert" hidden></p>
+
+  <div id="result" hidden>
+    <p class="pair-ok" data-i18n="pair.test_ok"></p>
+    <dl class="pair-readings">
+      <dt data-i18n="pair.reading_temperature"></dt>
+      <dd id="reading-temperature"></dd>
+      <dt data-i18n="pair.reading_setpoint"></dt>
+      <dd id="reading-setpoint"></dd>
+      <dt data-i18n="pair.reading_program"></dt>
+      <dd id="reading-program"></dd>
+      <dt data-i18n="pair.reading_state"></dt>
+      <dd id="reading-state"></dd>
+    </dl>
+  </div>
+
+  <div class="homey-form-group" id="toonwater-offer" hidden>
+    <p class="pair-hint" data-i18n="pair.toonwater_detected"></p>
+    <label class="homey-form-checkbox">
+      <input class="homey-form-checkbox-input" id="toonwater" type="checkbox">
+      <span class="homey-form-checkbox-checkmark"></span>
+      <span class="homey-form-checkbox-text" data-i18n="pair.toonwater_label"></span>
+    </label>
+  </div>
+
+  <div class="pair-actions">
+    <button class="homey-button-primary-shadow-full" id="test" type="button" data-i18n="pair.test"></button>
+    <button class="homey-button-primary-full" id="connect" type="button" disabled data-i18n="pair.connect"></button>
+  </div>
 </div>
+
+<script type="application/javascript">
+  (function () {
+    'use strict';
+
+    // The words of the answers of the app; the table keys are the values the handler of the app sends.
+    const PROGRAM_TEXT = { on: 'pair.program_on', off: 'pair.program_off' };
+    const STATE_TEXT = {
+      comfort: 'pair.state_comfort',
+      home: 'pair.state_home',
+      sleep: 'pair.state_sleep',
+      away: 'pair.state_away',
+      vacation: 'pair.state_vacation',
+      none: 'pair.state_none',
+    };
+
+    const byId = (id) => document.getElementById(id);
+    const input = { address: byId('address'), id: byId('toon-id'), name: byId('name') };
+    const error = byId('error');
+    const result = byId('result');
+    const reading = {
+      temperature: byId('reading-temperature'),
+      setpoint: byId('reading-setpoint'),
+      program: byId('reading-program'),
+      state: byId('reading-state'),
+    };
+    const offer = byId('toonwater-offer');
+    const toonwater = byId('toonwater');
+    const testButton = byId('test');
+    const connectButton = byId('connect');
+
+    let tested = null; // the address that the last successful test reached; the device is added at this address
+    let busy = false;
+
+    function setButtons() {
+      testButton.disabled = busy;
+      connectButton.disabled = busy || tested === null;
+      testButton.classList.toggle('is-disabled', testButton.disabled);
+      connectButton.classList.toggle('is-disabled', connectButton.disabled);
+    }
+
+    function setBusy(value, button) {
+      busy = value;
+      button.classList.toggle('is-loading', value);
+      setButtons();
+    }
+
+    function showError(message) {
+      error.textContent = message;
+      error.hidden = false;
+    }
+
+    function clearError() {
+      error.textContent = '';
+      error.hidden = true;
+    }
+
+    // What the app answers with is a sentence in the language of the user; a rejection without one gets the general sentence.
+    function messageOf(problem) {
+      return problem && typeof problem.message === 'string' && problem.message !== '' ? problem.message : Homey.__('error.unknown');
+    }
+
+    function word(table, key) {
+      return typeof key === 'string' && Object.prototype.hasOwnProperty.call(table, key) ? Homey.__(table[key]) : '-';
+    }
+
+    function degrees(value) {
+      return typeof value === 'number' && Number.isFinite(value)
+        ? value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' °C'
+        : '-';
+    }
+
+    // Everything the Toon reported is written as text, never as markup.
+    function showReadings(readings) {
+      reading.temperature.textContent = degrees(readings.currentTemp);
+      reading.setpoint.textContent = degrees(readings.currentSetpoint);
+      reading.program.textContent = word(PROGRAM_TEXT, readings.programState);
+      reading.state.textContent = word(STATE_TEXT, readings.activeState);
+      result.hidden = false;
+    }
+
+    // A test that is out of date: Connect is off again until the next test has succeeded.
+    function forgetTest() {
+      tested = null;
+      result.hidden = true;
+      offer.hidden = true;
+      toonwater.checked = false;
+      setButtons();
+    }
+
+    function acceptTest(answer) {
+      if (!answer || typeof answer.host !== 'string' || !answer.readings || typeof answer.readings !== 'object') {
+        throw new Error(Homey.__('error.unknown'));
+      }
+      tested = answer.host;
+      input.address.value = answer.host;
+      showReadings(answer.readings);
+      offer.hidden = !(answer.features && answer.features.toonwater === 'detected');
+    }
+
+    // An address that was edited while its test ran has nothing to do with the answer: the user tests again.
+    async function runTest() {
+      if (busy) return;
+      forgetTest();
+      clearError();
+      setBusy(true, testButton);
+      const requested = input.address.value;
+      try {
+        const answer = await Homey.emit('testConnection', { address: requested });
+        if (input.address.value === requested) acceptTest(answer);
+      } catch (problem) {
+        if (input.address.value === requested) showError(messageOf(problem));
+      } finally {
+        setBusy(false, testButton);
+      }
+    }
+
+    async function runConnect() {
+      if (busy || tested === null) return;
+      clearError();
+      setBusy(true, connectButton);
+      try {
+        let device;
+        try {
+          device = await Homey.emit('buildDevice', {
+            name: input.name.value,
+            id: input.id.value,
+            address: tested,
+            features: { toonwater: !offer.hidden && toonwater.checked },
+          });
+        } catch (problem) {
+          showError(messageOf(problem));
+          return;
+        }
+        try {
+          await Homey.createDevice(device);
+        } catch (problem) {
+          showError(Homey.__('pair.create_failed', { error: messageOf(problem) }));
+          return;
+        }
+        Homey.done();
+      } finally {
+        setBusy(false, connectButton);
+      }
+    }
+
+    input.address.addEventListener('input', forgetTest);
+    [input.address, input.id, input.name].forEach((element) => element.addEventListener('input', clearError));
+    testButton.addEventListener('click', runTest);
+    connectButton.addEventListener('click', runConnect);
+
+    Homey.setTitle(Homey.__('pair.title'));
+    setButtons();
+  }());
+</script>

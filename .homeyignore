@@ -1,0 +1,7 @@
+docs/
+test/
+scripts/
+*.md
+CONTRIBUTING.md
+.github/
+tsconfig.eslint.json

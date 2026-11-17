@@ -1,0 +1,18 @@
+{
+  "source": "derived from 03 section 4.5 / I6, not captured; HW-02",
+  "payload": {
+    "result": "ok",
+    "powerUsage": {
+      "value": 324,
+      "avgValue": 249.07
+    },
+    "powerProduction": {
+      "value": 0,
+      "avgValue": 0
+    },
+    "gasUsage": {
+      "value": null,
+      "avgValue": null
+    }
+  }
+}

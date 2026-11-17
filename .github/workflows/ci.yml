@@ -20,7 +20,7 @@ jobs:
     name: Lint and test (Node 22)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - uses: actions/setup-node@v7
@@ -37,7 +37,7 @@ jobs:
     name: Validate and pack (Node 24)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - uses: actions/setup-node@v7

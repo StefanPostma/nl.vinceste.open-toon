@@ -180,6 +180,10 @@ Open-Toon® started as an app by Vinceste IT (Stefan Postma). Thanks to oepi-loe
 
 Licence: GPL-3.0, see `LICENSE`.
 
+### Support the project
+
+If this app saves you time, thank you for using it. A coffee is always appreciated: [buymeacoffee.com/stefanpostma](https://buymeacoffee.com/stefanpostma). The app stays free and open source either way.
+
 ---
 
 ## Nederlands
@@ -354,3 +358,7 @@ Maak een melding aan op https://github.com/StefanPostma/nl.vinceste.open-toon/is
 Open-Toon® begon als app van Vinceste IT (Stefan Postma). Dank aan oepi-loepi (de ondersteuning voor water), aan Paul Heeringa en aan Dennis Moes (moezie) voor de overstap naar Homey SDK 3 en de warmwatervlag. Toon® is een merk van zijn eigenaar; dit project is niet aan hem gelieerd. ToonWater is een apart project van oepi-loepi: deze app leest alleen de pagina die ToonWater levert en bevat er geen code van; hij is geschreven vanuit een beschrijving van die pagina (het adres en de veldnamen), niet vanuit de broncode van de add-on.
 
 Licentie: GPL-3.0, zie `LICENSE`.
+
+### Steun het project
+
+Bespaart deze app je tijd? Fijn dat je hem gebruikt. Een kop koffie wordt altijd gewaardeerd: [buymeacoffee.com/stefanpostma](https://buymeacoffee.com/stefanpostma). De app blijft in beide gevallen gratis en open source.

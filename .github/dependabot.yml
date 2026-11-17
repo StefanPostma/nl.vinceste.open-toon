@@ -6,6 +6,15 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      # eslint-config-athom (4.0.2, the latest) only allows eslint >=8.57.1 <9.0.0, and ESLint 10 no longer reads the
+      # .eslintrc format of this project. Revisit when Athom's config supports a newer ESLint.
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      # The types follow the runtime (Node.js 22, engines >=22, ADR-0011), not the newest Node.js: newer types would
+      # allow APIs that Node.js 22 does not have. Minor and patch updates of the 22.x types still arrive.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

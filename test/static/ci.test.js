@@ -60,7 +60,7 @@ describe('NFR-10 AC2: .github/workflows/ci.yml', () => {
   test('the workflow asks for read access to the repository only, and the checkout does not leave the token in .git/config', () => {
     assert.match(yaml, /^permissions:\n {2}contents: read\n/m);
     assert.equal(/\bwrite\b/.test(yaml), false);
-    assert.equal((yaml.match(/actions\/checkout@v4\n\s+with:\n\s+persist-credentials: false/g) || []).length, (yaml.match(/actions\/checkout@/g) || []).length);
+    assert.equal((yaml.match(/actions\/checkout@v\d+\n\s+with:\n\s+persist-credentials: false/g) || []).length, (yaml.match(/actions\/checkout@/g) || []).length);
   });
 });
 
@@ -70,5 +70,11 @@ describe('NFR-10 AC2 and ADR-0011: .github/dependabot.yml', () => {
 
     ['npm', 'github-actions'].forEach((ecosystem) => assert.match(dependabot, new RegExp(`package-ecosystem: "${ecosystem}"`)));
     assert.equal((dependabot.match(/interval: "weekly"/g) || []).length, 2);
+  });
+
+  test('it ignores new major versions of eslint and @types/node: neither can follow yet (ADR-0011)', () => {
+    const dependabot = read('.github/dependabot.yml');
+
+    ['eslint', '@types/node'].forEach((name) => assert.match(dependabot, new RegExp(`dependency-name: "${name}"\\n\\s+update-types: \\["version-update:semver-major"\\]`)));
   });
 });

@@ -38,7 +38,7 @@ The app reads the Toon by itself, so you do not need a Flow to refresh the value
 
 * A Toon that runs the open software, with its firewall opened so that Homey can reach it. This app does not work with a Toon as it comes out of the box. The first and the second generation of the Toon (Toon 1 and Toon 2) are the intended targets. They report their meters in different layouts and the app knows the layouts it has seen described, but no real Toon has been tried with this version yet, so every Toon model counts as untested until the hardware report says otherwise.
 * A fixed IP address for the Toon (give it one in your router).
-* A Homey Pro (Early 2023), Homey Pro (2016-2019) or Homey Pro mini with firmware 12.9.0 or newer. Homey Cloud and Homey Bridge cannot reach a device on your network and are not supported.
+* A Homey Pro (Early 2023), Homey Pro (2016-2019), Homey Pro mini or Homey Self-Hosted Server with firmware 12.9.0 or newer. Homey Cloud and Homey Bridge cannot reach a device on your network and are not supported.
 * A computer with Node.js 24 or newer to install the app with the Homey command line tool.
 
 Disclaimer: you use this app at your own risk. Opening your Toon is up to you; this project does not help with that.
@@ -60,7 +60,7 @@ npx homey app install
 
 `login` and `select` are needed once: log in with your Athom account and choose your Homey. To update later, run `npx homey app install` again from the newer source. Never add `--clean` to `homey app install` or `homey app run`: it purges the settings and data that the app has stored on your Homey. And do not use `homey app run` on the Homey that holds your devices: stopping it with Ctrl+C removes the app again, and your devices with it.
 
-This version was built and tested against a simulated Toon and a simulated Homey. A check on real hardware is still to be done, so every Homey model counts as untested until the hardware report says otherwise.
+This version was built and tested against a simulated Toon. It has also run on a **Homey Self-Hosted Server** (Homey firmware 13.5.4, Node.js 24; Homey command line tool 4.6.3): installing, pairing, polling every 30 seconds, changing the temperature state and the "cannot be reached" and recovery behaviour were checked there, with a simulated Toon (details in `docs/sdlc/13-self-hosted-test-report.md`). It has **not** been tried with a real Toon or on a Homey Pro or Homey Pro mini, so those count as untested until the hardware report says otherwise.
 
 ### Add a Toon
 
@@ -213,7 +213,7 @@ De app leest de Toon zelf uit, dus je hebt geen Flow nodig om de waarden te verv
 
 * Een Toon met de open software, waarvan de firewall open staat zodat Homey erbij kan. Deze app werkt niet met een Toon zoals hij uit de doos komt. De eerste en de tweede generatie van de Toon (Toon 1 en Toon 2) zijn de beoogde doelen. Ze melden hun meters in verschillende indelingen en de app kent de indelingen die beschreven zijn, maar met deze versie is nog geen echte Toon geprobeerd, dus elk Toon-model geldt als ongetest totdat het hardwarerapport anders zegt.
 * Een vast IP-adres voor de Toon (geef hem dat in je router).
-* Een Homey Pro (Early 2023), Homey Pro (2016-2019) of Homey Pro mini met firmware 12.9.0 of nieuwer. Homey Cloud en Homey Bridge kunnen een apparaat op je netwerk niet bereiken en worden niet ondersteund.
+* Een Homey Pro (Early 2023), Homey Pro (2016-2019), Homey Pro mini of Homey Self-Hosted Server met firmware 12.9.0 of nieuwer. Homey Cloud en Homey Bridge kunnen een apparaat op je netwerk niet bereiken en worden niet ondersteund.
 * Een computer met Node.js 24 of nieuwer om de app met het Homey-opdrachtregelprogramma te installeren.
 
 Disclaimer: gebruik van deze app is op eigen risico. Je Toon openzetten moet je zelf doen; dit project helpt daar niet bij.
@@ -235,7 +235,7 @@ npx homey app install
 
 `login` en `select` heb je één keer nodig: log in met je Athom-account en kies je Homey. Om later te updaten voer je `npx homey app install` opnieuw uit vanuit de nieuwere broncode. Gebruik nooit `--clean` bij `homey app install` of `homey app run`: dat wist de instellingen en gegevens die de app op je Homey heeft opgeslagen. En gebruik `homey app run` niet op de Homey waar je apparaten op staan: stop je het met Ctrl+C, dan verdwijnt de app weer, en je apparaten ermee.
 
-Deze versie is gebouwd en getest met een gesimuleerde Toon en een gesimuleerde Homey. Een controle op echte apparatuur moet nog gebeuren, dus elk Homey-model geldt als ongetest totdat het hardwarerapport anders zegt.
+Deze versie is gebouwd en getest met een gesimuleerde Toon. Ze heeft ook gedraaid op een **Homey Self-Hosted Server** (Homey-firmware 13.5.4, Node.js 24; Homey-opdrachtregelprogramma 4.6.3): installeren, koppelen, elke 30 seconden uitlezen, de temperatuurstand wijzigen en het gedrag bij "niet bereikbaar" en herstel zijn daar gecontroleerd, met een gesimuleerde Toon (details in `docs/sdlc/13-self-hosted-test-report.md`). Ze is **niet** geprobeerd met een echte Toon of op een Homey Pro of Homey Pro mini; die gelden als ongetest totdat het hardwarerapport anders zegt.
 
 ### Een Toon toevoegen
 

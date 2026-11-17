@@ -8,6 +8,8 @@
 | Machine | macOS, Node.js v25.9.0, npm 11.12.1. No Node 22 binary, no Homey, no Toon |
 | Verdict | **PASS_WITH_NOTES** - no blocker. Hand to the owner for hardware testing. Section 10 lists what the owner must do before committing and what needs an owner acknowledgement; section 11 lists what only hardware can settle. |
 
+> **Addendum 2026-11-17:** after this gate the app ran on a Homey Self-Hosted Server (firmware 13.5.4) with a simulated Toon, and CI on Node 22 went green; see `13-self-hosted-test-report.md`. The statements below that say "no Homey" describe the day of the gate.
+
 Everything below was re-run or re-read by me today. "Re-run" means I executed the command; "checked" means I read the file at the cited line. Where I relied on a document written by the team, I say so. The test report `08-test-report.md` is model-generated; I spot-checked five of its claims (section 7) and all five reproduced.
 
 ---

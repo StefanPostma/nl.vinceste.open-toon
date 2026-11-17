@@ -11,7 +11,7 @@
 
 ## 0. Trust, and what was and was not verified when this plan was written
 
-Nothing in this plan has been run on a Homey or a Toon: there was none. It was written against the mock Toon, the fake Homey and the documents of this repository, which are model-generated apart from the code itself.
+When this plan was written, nothing in it had been run on a Homey or a Toon: there was none. **Update 2026-11-17:** the app has since run on a Homey Self-Hosted Server (firmware 13.5.4, Node.js 24) with a simulated Toon; `13-self-hosted-test-report.md` lists the versions and what it covered (parts of phases D, E, G and H). Everything that needs a real Toon, and every other Homey model, is still open. The plan was written against the mock Toon, the fake Homey and the documents of this repository, which are model-generated apart from the code itself.
 
 **Verified in this run (2026-11-14, Homey CLI 4.6.3, Node.js 25.9 on macOS):**
 
